@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seafront Deluxe — The Shore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --deep: #030D1B;
+      --navy: #071E38;
+      --surface: rgba(7, 30, 56, 0.70);
+      --border: rgba(0, 212, 255, 0.14);
+      --cyan: #00D4FF;
+      --cyan-dim: rgba(0, 212, 255, 0.12);
+      --text: #D6EFFA;
+      --muted: #6B96B8;
+      --gold: #F4B45A;
+      --r: 17px;
+      --r-sm: 10px;
+      --r-lg: 28px;
+      --glass: rgba(5, 25, 50, 0.65);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: 70px;
+      padding: 0 3rem;
+      background: rgba(3, 13, 27, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-logo span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(214, 239, 250, 0.65);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover {
+      color: var(--cyan);
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      padding: 1.4rem 3rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--cyan);
+    }
+
+    .bc-sep {
+      opacity: 0.4;
+    }
+
+    .bc-current {
+      color: var(--text);
+    }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 2.5rem 3rem 6rem;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      margin-bottom: 3rem;
+    }
+
+    .gallery-main {
+      position: relative;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      height: 520px;
+      margin-bottom: 1rem;
+    }
+
+    #g-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.92) saturate(1.1);
+      transition: opacity 0.3s;
+    }
+
+    #g-panorama {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    /* Gradient overlay on photo */
+    .gallery-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to bottom, rgba(3, 13, 27, 0.1) 0%, rgba(3, 13, 27, 0.5) 100%);
+      pointer-events: none;
+    }
+
+    /* 360 toggle button */
+    .btn-360 {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 5;
+      background: rgba(3, 13, 27, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid var(--border);
+      color: var(--cyan);
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: background 0.2s, border-color 0.2s;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-360:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--cyan);
+    }
+
+    .btn-360.active {
+      background: var(--cyan);
+      color: var(--deep);
+      border-color: var(--cyan);
+    }
+
+    /* Drag hint */
+    .drag-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      background: rgba(3, 13, 27, 0.7);
+      backdrop-filter: blur(6px);
+      color: rgba(214, 239, 250, 0.85);
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      pointer-events: none;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    /* Room number badge */
+    .room-num-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 5;
+      background: rgba(3, 13, 27, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    /* Photo counter */
+    .photo-counter {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 5;
+      background: rgba(3, 13, 27, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+    }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .thumb {
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      cursor: pointer;
+      height: 90px;
+      border: 1.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .thumb.active {
+      border-color: var(--cyan);
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.8) saturate(1.1);
+      transition: filter 0.2s, transform 0.3s;
+    }
+
+    .thumb:hover img,
+    .thumb.active img {
+      filter: brightness(1) saturate(1.2);
+    }
+
+    .thumb:hover img {
+      transform: scale(1.06);
+    }
+
+    /* ── DETAIL LAYOUT ── */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 370px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── LEFT ── */
+    .room-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .room-headline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .room-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.6rem;
+      font-weight: 400;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    .room-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding-top: 4px;
+    }
+
+    .star-gold {
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    .room-stats {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Section blocks */
+    .info-block {
+      margin-bottom: 2.5rem;
+    }
+
+    .block-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .block-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .room-desc {
+      font-size: 0.93rem;
+      color: rgba(214, 239, 250, 0.75);
+      line-height: 1.85;
+    }
+
+    /* Amenities */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+    }
+
+    .amenity {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.7rem 0.95rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s;
+    }
+
+    .amenity:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+
+    .amenity .icon {
+      font-size: 1.05rem;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* Map */
+    .map-wrap {
+      border-radius: var(--r);
+      overflow: hidden;
+      height: 280px;
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .map-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .dir-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--glass);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      border-radius: var(--r-sm);
+      padding: 0.65rem 1.3rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .dir-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* ── RIGHT: BOOKING CARD ── */
+    .booking-card {
+      position: sticky;
+      top: 90px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.05);
+      overflow: hidden;
+    }
+
+    /* Glow top bar */
+    .card-glow-bar {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    }
+
+    .card-inner {
+      padding: 1.8rem;
+    }
+
+    .card-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-bottom: 1.6rem;
+      padding-bottom: 1.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-price-big {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-price-unit {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .card-incl {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      font-weight: 500;
+      background: var(--cyan-dim);
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+    }
+
+    /* Date row */
+    .dates-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .date-field {
+      background: rgba(3, 13, 27, 0.6);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.8rem 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .date-field:focus-within {
+      border-color: var(--cyan);
+    }
+
+    .date-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .date-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      width: 100%;
+      font-weight: 500;
+      color-scheme: dark;
+    }
+
+    /* Guests */
+    .guests-row {
+      background: rgba(3, 13, 27, 0.6);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.7rem 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+      transition: border-color 0.2s;
+    }
+
+    .guests-row:focus-within {
+      border-color: var(--cyan);
+    }
+
+    .guests-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .guests-select {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .guests-select option {
+      background: var(--navy);
+    }
+
+    /* Total */
+    .total-box {
+      background: rgba(3, 13, 27, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .total-row.bold {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      border-top: 1px solid var(--border);
+      padding-top: 0.65rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0;
+    }
+
+    /* CTA */
+    .book-cta {
+      display: block;
+      width: 100%;
+      background: var(--cyan);
+      color: var(--deep);
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 1.05rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 0.8rem;
+    }
+
+    .book-cta:hover {
+      background: #33DEFF;
+    }
+
+    .book-cta:active {
+      transform: scale(0.99);
+    }
+
+    .card-disclaimer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Perks list */
+    .perks-list {
+      list-style: none;
+      margin-top: 1.4rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .perks-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .perks-list li::before {
+      content: '✓';
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    /* ── SIMILAR ROOMS ── */
+    .similar-section {
+      margin-top: 5rem;
+    }
+
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.4rem;
+    }
+
+    .similar-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex;
+      text-decoration: none;
+      color: inherit;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s;
+    }
+
+    .similar-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+
+    .similar-img {
+      width: 130px;
+      min-width: 130px;
+      object-fit: cover;
+      filter: brightness(0.85);
+    }
+
+    .similar-body {
+      padding: 1.1rem;
+    }
+
+    .similar-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .similar-price {
+      font-size: 0.85rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .similar-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #020A17;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      margin-top: 5rem;
+    }
+
+    .footer-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+
+    .footer-logo span {
+      color: var(--cyan);
+    }
+
+    .footer-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">THE <span>SHORE</span></a>
+    <a href="index.html#rooms" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
+      All Rooms
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#rooms">Rooms</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="payment.html">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="bc-sep">›</span>
+    <a href="index.html#rooms">Rooms</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">Seafront Deluxe</span>
+  </div>
+
+  <div class="page">
+
+    <!-- GALLERY -->
+    <div class="gallery">
+      <div class="gallery-main" id="gallery-wrap">
+        <img id="g-photo" src="https://picsum.photos/seed/oceandeluxe1/1400/600" alt="Room">
+        <div id="g-panorama"></div>
+        <div class="room-num-badge">Room 201</div>
+        <div class="photo-counter" id="photo-counter">1 / 4</div>
+        <div class="drag-hint" id="drag-hint">👆 Drag to look around</div>
+        <button class="btn-360" id="btn360" onclick="toggle360()">
+          <span>⟳</span> 360° View
+        </button>
+      </div>
+      <div class="gallery-thumbs">
+        <div class="thumb active" onclick="setPhoto(0,this)"><img src="https://picsum.photos/seed/oceandeluxe1/400/200"
+            alt="Main"></div>
+        <div class="thumb" onclick="setPhoto(1,this)"><img src="https://picsum.photos/seed/room-bath2/400/200"
+            alt="Bath"></div>
+        <div class="thumb" onclick="setPhoto(2,this)"><img src="https://picsum.photos/seed/room-balcony2/400/200"
+            alt="Balcony"></div>
+        <div class="thumb" onclick="setPhoto(3,this)"><img src="https://picsum.photos/seed/oceanview99/400/200"
+            alt="View"></div>
+      </div>
+    </div>
+
+    <!-- DETAIL LAYOUT -->
+    <div class="detail-layout">
+
+      <!-- LEFT -->
+      <div>
+        <div class="room-header">
+          <div class="room-headline">
+            <h1 class="room-title">Seafront Deluxe</h1>
+            <div class="room-rating">
+              <span class="star-gold">★</span> 4.9
+              <span style="margin-left:3px; opacity:.45">(42 reviews)</span>
+            </div>
+          </div>
+          <div class="room-stats">
+            <span class="stat-pill">🛏️ King Bed</span>
+            <span class="stat-pill">👤 Up to 2 Guests</span>
+            <span class="stat-pill">📐 36m²</span>
+            <span class="stat-pill">🌊 80m to Beach</span>
+            <span class="stat-pill">🏠 2nd Floor</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="info-block">
+          <div class="block-label">About this room</div>
+          <p class="room-desc">
+            Step inside the Seafront Deluxe and let the horizon do the talking. A wall of glass frames the sea from the
+            moment you wake — morning light rippling across the water, evenings bleeding gold into the sky. The king bed
+            faces the view deliberately; sleep and the sea become the same thing.
+            <br><br>
+            The bathroom continues the quiet luxury: a rain shower overhead, a freestanding bathtub positioned to look
+            out at the water, and Portuguese stone tiles that stay cool underfoot. Step through the glass doors to your
+            private balcony — the sound of the waves is constant. A breakfast basket arrives each morning before you're
+            ready to move.
+          </p>
+        </div>
+
+        <!-- Amenities -->
+        <div class="info-block">
+          <div class="block-label">What's included</div>
+          <div class="amenities-grid">
+            <div class="amenity"><span class="icon">❄️</span> Air Conditioning</div>
+            <div class="amenity"><span class="icon">📶</span> Free WiFi</div>
+            <div class="amenity"><span class="icon">🛁</span> Freestanding Bath</div>
+            <div class="amenity"><span class="icon">🚿</span> Rain Shower</div>
+            <div class="amenity"><span class="icon">📺</span> 55" Smart TV</div>
+            <div class="amenity"><span class="icon">🌅</span> Private Balcony</div>
+            <div class="amenity"><span class="icon">☕</span> Coffee Machine</div>
+            <div class="amenity"><span class="icon">🍳</span> Breakfast Included</div>
+            <div class="amenity"><span class="icon">🔒</span> Private Entrance</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Location -->
+        <div class="info-block" id="location">
+          <div class="block-label">Location</div>
+          <p style="font-size:0.88rem; color:var(--muted); margin-bottom:1.2rem;">
+            📍 80m from My Khe Beach &nbsp;·&nbsp; 5 min walk to seafront &nbsp;·&nbsp; 20 min from Da Nang Airport
+          </p>
+          <div class="map-wrap">
+            <!--
+              Replace with your Google Maps embed URL.
+              To get it: maps.google.com → Share → Embed a map → Copy iframe src
+              Or use: src="https://maps.google.com/maps?q=YOUR_LAT,YOUR_LNG&z=16&output=embed"
+            -->
+            <iframe src="https://maps.google.com/maps?q=16.0544,108.2477&z=16&output=embed" allowfullscreen=""
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="The Shore location map">
+            </iframe>
+          </div>
+          <!--
+            Replace lat/lng below with your actual coordinates
+          -->
+          <a class="dir-btn" href="https://www.google.com/maps?q=16.0544,108.2477" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11" />
+            </svg>
+            Get Directions in Google Maps
+          </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Similar Rooms -->
+        <div class="similar-section">
+          <div class="block-label">Other Rooms</div>
+          <div class="similar-grid">
+            <a href="details.html" class="similar-card">
+              <img class="similar-img" src="https://picsum.photos/seed/gardenstudio99/200/300" alt="Garden Studio">
+              <div class="similar-body">
+                <div class="similar-name">Garden Studio</div>
+                <div class="similar-price">$95 / night</div>
+                <div class="similar-sub">🌿 Garden view · 150m to beach</div>
+              </div>
+            </a>
+            <a href="details.html" class="similar-card">
+              <img class="similar-img" src="https://picsum.photos/seed/sunsetsuite88/200/300" alt="Sunset Suite">
+              <div class="similar-body">
+                <div class="similar-name">Sunset Suite</div>
+                <div class="similar-price">$260 / night</div>
+                <div class="similar-sub">✦ Premium · Sea view · 80m to beach</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Booking Card -->
+      <div>
+        <div class="booking-card">
+          <div class="card-glow-bar"></div>
+          <div class="card-inner">
+            <div class="card-price-row">
+              <div class="card-price-big">$180</div>
+              <div class="card-price-unit">/ night</div>
+              <span class="card-incl">✓ Breakfast</span>
+            </div>
+
+            <div class="dates-row">
+              <div class="date-field">
+                <span class="date-label">Check In</span>
+                <input class="date-input" type="date" id="ci" onchange="calcTotal()">
+              </div>
+              <div class="date-field">
+                <span class="date-label">Check Out</span>
+                <input class="date-input" type="date" id="co" onchange="calcTotal()">
+              </div>
+            </div>
+
+            <div class="guests-row">
+              <span class="guests-label">Guests</span>
+              <select class="guests-select">
+                <option>1 Guest</option>
+                <option selected>2 Guests</option>
+              </select>
+            </div>
+
+            <div class="total-box">
+              <div class="total-row">
+                <span>$180 × <span id="n-nights">2</span> nights</span>
+                <span id="subtotal">$360</span>
+              </div>
+              <div class="total-row">
+                <span>Taxes &amp; fees (10%)</span>
+                <span id="taxes">$36</span>
+              </div>
+              <div class="total-row bold">
+                <span>Total</span>
+                <span id="total">$396</span>
+              </div>
+            </div>
+
+            <!-- CTA to payment page -->
+            <a class="book-cta" id="book-cta" href="payment.html">Reserve This Room →</a>
+
+            <p class="card-disclaimer">
+              You'll complete your details and payment on the next page.
+            </p>
+
+            <ul class="perks-list">
+              <li>Free cancellation 48h before check-in</li>
+              <li>No hidden platform fees</li>
+              <li>Direct booking — pay the owner</li>
+              <li>Instant WhatsApp confirmation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">THE <span>SHORE</span></span>
+      <span class="footer-text">© 2025 The Shore. Direct bookings only.</span>
+      <span class="footer-text">📍 150m My Khe Beach · Da Nang</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Gallery ──
+    const photos = [
+      'https://picsum.photos/seed/oceandeluxe1/1400/600',
+      'https://picsum.photos/seed/room-bath2/1400/600',
+      'https://picsum.photos/seed/room-balcony2/1400/600',
+      'https://picsum.photos/seed/oceanview99/1400/600',
+    ];
+    let is360 = false;
+    let pv = null;
+
+    function setPhoto(idx, el) {
+      if (is360) toggle360();
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      const photo = document.getElementById('g-photo');
+      photo.style.opacity = '0';
+      setTimeout(() => { photo.src = photos[idx]; photo.style.opacity = '1'; }, 200);
+      document.getElementById('photo-counter').textContent = (idx + 1) + ' / ' + photos.length;
+    }
+
+    function toggle360() {
+      is360 = !is360;
+      const photo = document.getElementById('g-photo');
+      const pan = document.getElementById('g-panorama');
+      const btn = document.getElementById('btn360');
+      const hint = document.getElementById('drag-hint');
+      const ctr = document.getElementById('photo-counter');
+
+      if (is360) {
+        photo.style.display = 'none';
+        pan.style.display = 'block';
+        btn.classList.add('active');
+        btn.innerHTML = '<span>✕</span> Back to Photos';
+        hint.style.display = 'block';
+        ctr.style.display = 'none';
+
+        if (!pv) {
+          pv = pannellum.viewer('g-panorama', {
+            type: 'equirectangular',
+            // Replace with your equirectangular panoramic photo URL
+            panorama: 'https://pannellum.org/images/alma.jpg',
+            autoLoad: true,
+            autoRotate: -1.5,
+            autoRotateInactivityDelay: 4000,
+            hfov: 100,
+            showControls: true,
+          });
+        }
+        setTimeout(() => {
+          hint.style.transition = 'opacity 0.6s';
+          hint.style.opacity = '0';
+          setTimeout(() => { hint.style.display = 'none'; hint.style.opacity = '1'; }, 700);
+        }, 3000);
+
+      } else {
+        photo.style.display = 'block';
+        pan.style.display = 'none';
+        btn.classList.remove('active');
+        btn.innerHTML = '<span>⟳</span> 360° View';
+        hint.style.display = 'none';
+        ctr.style.display = 'block';
+      }
+    }
+
+    // ── Pricing ──
+    const PRICE = 180, TAX = 0.1;
+
+    function calcTotal() {
+      const ci = document.getElementById('ci').value;
+      const co = document.getElementById('co').value;
+      if (!ci || !co) return;
+      const nights = Math.max(1, Math.round((new Date(co) - new Date(ci)) / 86400000));
+      const sub = PRICE * nights;
+      const tax = Math.round(sub * TAX);
+      const tot = sub + tax;
+      document.getElementById('n-nights').textContent = nights;
+      document.getElementById('subtotal').textContent = '$' + sub;
+      document.getElementById('taxes').textContent = '$' + tax;
+      document.getElementById('total').textContent = '$' + tot;
+
+      // Pass data via URL to payment page
+      document.getElementById('book-cta').href =
+        `payment.html?room=Seafront+Deluxe&ci=${ci}&co=${co}&nights=${nights}&total=${tot}`;
+    }
+
+    // Init dates
+    const fmt = d => d.toISOString().split('T')[0];
+    const t = new Date();
+    const ci2 = new Date(t); ci2.setDate(t.getDate() + 1);
+    const co2 = new Date(t); co2.setDate(t.getDate() + 3);
+    document.getElementById('ci').value = fmt(ci2);
+    document.getElementById('co').value = fmt(co2);
+    calcTotal();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Booking — The Shore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --deep: #030D1B;
+      --navy: #071E38;
+      --surface: rgba(7, 30, 56, 0.70);
+      --border: rgba(0, 212, 255, 0.14);
+      --cyan: #00D4FF;
+      --cyan-dim: rgba(0, 212, 255, 0.12);
+      --text: #D6EFFA;
+      --muted: #6B96B8;
+      --gold: #F4B45A;
+      --momo: #AE2070;
+      --success: #00E09B;
+      --r: 17px;
+      --r-sm: 10px;
+      --r-lg: 28px;
+      --glass: rgba(5, 25, 50, 0.65);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    /* Background subtle radial glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at 20% 30%, rgba(0, 80, 180, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(0, 180, 140, 0.07) 0%, transparent 55%);
+    }
+
+    /* ── NAV ── */
+    nav {
+      height: 70px;
+      padding: 0 3rem;
+      background: rgba(3, 13, 27, 0.95);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-logo span {
+      color: var(--cyan);
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover {
+      color: var(--cyan);
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .secure-badge span {
+      color: var(--success);
+    }
+
+    /* ── PROGRESS STEPS ── */
+    .progress-bar {
+      background: rgba(3, 13, 27, 0.8);
+      border-bottom: 1px solid var(--border);
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 1.2rem 0;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .step.active {
+      color: var(--cyan);
+    }
+
+    .step.done {
+      color: var(--success);
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step.done .step-num {
+      background: var(--success);
+      border-color: var(--success);
+      color: #000;
+    }
+
+    .step.active .step-num {
+      background: var(--cyan-dim);
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0.7rem;
+    }
+
+    .step.active~.step-line {
+      background: var(--border);
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 3rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── FORM COLUMN ── */
+    .form-section {
+      margin-bottom: 2.2rem;
+    }
+
+    .form-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .form-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .form-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--cyan-dim);
+      border: 1.5px solid var(--cyan);
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: rgba(3, 13, 27, 0.7);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.75rem 1rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color-scheme: dark;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(107, 150, 184, 0.5);
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.07);
+    }
+
+    .field input.invalid {
+      border-color: #ff5577;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field select option {
+      background: var(--navy);
+    }
+
+    /* ── PAYMENT SECTION ── */
+    .pay-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .pay-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Method Tabs */
+    .pay-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pay-tab {
+      background: rgba(3, 13, 27, 0.7);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 1rem 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .pay-tab .tab-icon {
+      font-size: 1.5rem;
+    }
+
+    .pay-tab:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      color: var(--text);
+    }
+
+    .pay-tab.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.08);
+    }
+
+    /* Pay Panels */
+    .pay-panel {
+      display: none;
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .pay-panel.active {
+      display: block;
+    }
+
+    /* Apple Pay */
+    .apple-panel {
+      background: #000;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--r);
+    }
+
+    .apple-btn {
+      width: 100%;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: opacity 0.2s;
+      letter-spacing: -0.01em;
+    }
+
+    .apple-btn:hover {
+      opacity: 0.88;
+    }
+
+    .apple-note {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.72rem;
+      margin-top: 0.8rem;
+    }
+
+    /* QR Panel */
+    .qr-panel {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .qr-layout {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .qr-img-wrap {
+      background: #fff;
+      border-radius: var(--r-sm);
+      padding: 10px;
+      flex-shrink: 0;
+    }
+
+    .qr-img-wrap img {
+      display: block;
+      width: 140px;
+      height: 140px;
+      border-radius: 6px;
+    }
+
+    .qr-info {
+      flex: 1;
+    }
+
+    .qr-amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .qr-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .bank-detail {
+      margin-bottom: 0.45rem;
+    }
+
+    .bank-key {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    .bank-val {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 4px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.65rem;
+      cursor: pointer;
+      margin-left: 0.4rem;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .copy-btn:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    /* MoMo Panel */
+    .momo-panel {
+      background: linear-gradient(145deg, #7B0040 0%, #AE2070 50%, #C2185B 100%);
+      border-radius: var(--r);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .momo-logo-text {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+
+    .momo-qr-wrap {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .momo-qr-wrap img {
+      display: block;
+      width: 140px;
+      height: 140px;
+      border-radius: 8px;
+    }
+
+    .momo-phone {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    .momo-name {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0.2rem 0 0.8rem;
+    }
+
+    .momo-amount-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--r-sm);
+      padding: 0.6rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* ── CONFIRM BUTTON ── */
+    .confirm-btn {
+      width: 100%;
+      background: var(--cyan);
+      color: var(--deep);
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 1.1rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      margin-top: 2rem;
+      margin-bottom: 0.7rem;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .confirm-btn:hover {
+      background: #33DEFF;
+    }
+
+    .confirm-btn:active {
+      transform: scale(0.99);
+    }
+
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .trust-row span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* ── ORDER SUMMARY ── */
+    .order-card {
+      position: sticky;
+      top: 90px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    .order-glow {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .order-inner {
+      padding: 1.8rem;
+    }
+
+    .order-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 1.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Room image in summary */
+    .order-room-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: var(--r-sm);
+      margin-bottom: 1.2rem;
+      filter: brightness(0.85) saturate(1.1);
+    }
+
+    .order-room-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .order-room-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.3rem;
+    }
+
+    .order-dates {
+      background: rgba(3, 13, 27, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .order-date-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+
+    .order-date-row+.order-date-row {
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .odr-key {
+      color: var(--muted);
+    }
+
+    .odr-val {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .order-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.2rem 0;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .price-row.total {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      border-top: 1px solid var(--border);
+      padding-top: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .price-row.total .price-amt {
+      color: var(--cyan);
+    }
+
+    .order-incl {
+      margin-top: 1.3rem;
+      padding: 0.9rem;
+      border-radius: var(--r-sm);
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .order-incl-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+    }
+
+    .order-incl ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .order-incl li {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .order-incl li::before {
+      content: '✓';
+      color: var(--cyan);
+      font-size: 0.7rem;
+    }
+
+    /* ── SUCCESS OVERLAY ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(3, 13, 27, 0.88);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-box {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 3rem 2.5rem;
+      max-width: 460px;
+      width: 90%;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      transform: translateY(24px);
+      transition: transform 0.4s;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 80px rgba(0, 212, 255, 0.06);
+    }
+
+    .overlay.show .success-box {
+      transform: translateY(0);
+    }
+
+    .success-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2.5px solid var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      box-shadow: 0 0 30px rgba(0, 224, 155, 0.25);
+      animation: ringPulse 2s ease infinite;
+    }
+
+    @keyframes ringPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 30px rgba(0, 224, 155, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 50px rgba(0, 224, 155, 0.45);
+      }
+    }
+
+    .success-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.65;
+    }
+
+    .success-detail {
+      background: rgba(3, 13, 27, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 1.1rem 1.3rem;
+      text-align: left;
+      margin-bottom: 1.8rem;
+    }
+
+    .sd-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+      padding: 0.28rem 0;
+    }
+
+    .sd-key {
+      color: var(--muted);
+    }
+
+    .sd-val {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .success-ref {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .ref-code {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      padding: 0.25rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .btn-success {
+      display: inline-block;
+      background: var(--cyan);
+      color: var(--deep);
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 0.85rem 2rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-right: 0.8rem;
+    }
+
+    .btn-success:hover {
+      background: #33DEFF;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background: none;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.85rem 2rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-home:hover {
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #020A17;
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .footer-logo span {
+      color: var(--cyan);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">THE <span>SHORE</span></a>
+    <a href="details.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
+      Back to Room
+    </a>
+    <div class="secure-badge">
+      <span>🔒</span> Secure Checkout
+    </div>
+  </nav>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="steps">
+      <div class="step done">
+        <div class="step-num">✓</div>
+        <span>Choose Room</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        <span>Your Details</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <span>Confirm</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE -->
+  <div class="page">
+
+    <!-- LEFT: FORM -->
+    <div>
+
+      <!-- 1. Guest Info -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="form-num">1</span>
+          Guest Information
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Your first name">
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Your last name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="you@email.com">
+          </div>
+          <div class="field">
+            <label>Phone / WhatsApp</label>
+            <input type="tel" id="phone" placeholder="+84 000 000 000">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="field">
+            <label>Nationality</label>
+            <select id="nationality">
+              <option value="">Select country…</option>
+              <option>🇻🇳 Vietnam</option>
+              <option>🇺🇸 United States</option>
+              <option>🇬🇧 United Kingdom</option>
+              <option>🇦🇺 Australia</option>
+              <option>🇫🇷 France</option>
+              <option>🇩🇪 Germany</option>
+              <option>🇯🇵 Japan</option>
+              <option>🇰🇷 South Korea</option>
+              <option>🇨🇳 China</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Dates & Guests -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="form-num">2</span>
+          Stay Details
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Check In</label>
+            <input type="date" id="pay-ci" onchange="recalc()">
+          </div>
+          <div class="field">
+            <label>Check Out</label>
+            <input type="date" id="pay-co" onchange="recalc()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Number of Guests</label>
+            <select id="guests">
+              <option>1 Guest</option>
+              <option selected>2 Guests</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Estimated Arrival</label>
+            <select>
+              <option>12:00 – 14:00</option>
+              <option>14:00 – 16:00</option>
+              <option>16:00 – 18:00</option>
+              <option>18:00 – 20:00</option>
+              <option>20:00 – 22:00</option>
+              <option>Late arrival (22:00+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="field">
+            <label>Special Requests / Notes</label>
+            <textarea id="notes"
+              placeholder="Early check-in, dietary requirements, celebrations, allergies…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Payment -->
+      <div class="form-section">
+        <div class="pay-title">
+          <span class="form-num">3</span>
+          Payment Method
+        </div>
+
+        <!-- Tabs -->
+        <div class="pay-tabs">
+          <button class="pay-tab active" onclick="setTab('apple', this)">
+            <span class="tab-icon"> </span>
+            Apple Pay
+          </button>
+          <button class="pay-tab" onclick="setTab('qr', this)">
+            <span class="tab-icon">⬛</span>
+            Bank QR
+          </button>
+          <button class="pay-tab" onclick="setTab('momo', this)">
+            <span class="tab-icon">💜</span>
+            MoMo
+          </button>
+        </div>
+
+        <!-- Apple Pay Panel -->
+        <div class="pay-panel active" id="panel-apple">
+          <div class="apple-panel">
+            <button class="apple-btn">
+              <svg width="20" height="24" viewBox="0 0 814 1000" fill="black">
+                <path
+                  d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.5-155.5-127.5C46.2 776.6 1 703 1 632.6c0-167.5 109.2-256 215.7-256 64 0 117.6 42.1 158.1 42.1 38.5 0 98.4-44.5 172.4-44.5 28.1 0 130.3 2.6 200.9 92.9zm-234.5-205C546.9 68 576.3 0 576.3 0c-3.2.6-3.2.6-5.8.6-1.9 0-1.9 0-3.8-.6-78.5 0-141.9 58.3-178.9 118.3-34.6 55.8-53.4 117.5-51.5 176.2 0 2.6-.6 5.2-.6 7.7 2.6.6 5.2 1.3 8.3 1.3 77.5 0 145.8-53.9 185.5-115.5z" />
+              </svg>
+              Pay with Apple Pay
+            </button>
+            <p class="apple-note">Amount: <strong id="apple-total" style="color:rgba(255,255,255,0.8)">$396</strong> ·
+              Redirects to Apple Pay secure checkout</p>
+          </div>
+        </div>
+
+        <!-- QR Panel -->
+        <div class="pay-panel" id="panel-qr">
+          <div class="qr-panel">
+            <div class="qr-layout">
+              <div class="qr-img-wrap">
+                <img id="qr-code"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=SHORE_BOOKING_396USD"
+                  alt="QR Code">
+              </div>
+              <div class="qr-info">
+                <div class="qr-amount" id="qr-amount">$396</div>
+                <div class="qr-sub">Scan with your banking app</div>
+                <div class="bank-detail">
+                  <span class="bank-key">Bank</span>
+                  <span class="bank-val">Vietcombank</span>
+                </div>
+                <div class="bank-detail">
+                  <span class="bank-key">Account No.</span>
+                  <span class="bank-val">0123 456 789 01 <button class="copy-btn"
+                      onclick="copyText('0123456789')">copy</button></span>
+                </div>
+                <div class="bank-detail">
+                  <span class="bank-key">Account Name</span>
+                  <span class="bank-val">THE SHORE CO. LTD</span>
+                </div>
+                <div class="bank-detail">
+                  <span class="bank-key">Reference</span>
+                  <span class="bank-val" id="bank-ref">SHORE-XXXXXX</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MoMo Panel -->
+        <div class="pay-panel" id="panel-momo">
+          <div class="momo-panel">
+            <div class="momo-logo-text">MoMo</div>
+            <div class="momo-qr-wrap">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=MOMO_SHORE_PAYMENT&color=AE2070"
+                alt="MoMo QR">
+            </div>
+            <div class="momo-phone">0909 000 000</div>
+            <div class="momo-name">Nguyen Van A (The Shore)</div>
+            <div class="momo-amount-box">Amount: <span id="momo-amount">$396</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIRM BUTTON -->
+      <button class="confirm-btn" onclick="submitBooking()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        Confirm &amp; Complete Booking
+      </button>
+      <div class="trust-row">
+        <span>🔒 Secure</span>
+        <span>✓ No hidden fees</span>
+        <span>↩ Free cancellation 48h</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div>
+      <div class="order-card">
+        <div class="order-glow"></div>
+        <div class="order-inner">
+          <div class="order-title">Order Summary</div>
+
+          <img class="order-room-img" src="https://picsum.photos/seed/oceandeluxe1/700/300" alt="Seafront Deluxe">
+          <div class="order-room-name" id="sum-room">Seafront Deluxe</div>
+          <div class="order-room-sub">🌊 Sea View · King Bed · 2nd Floor</div>
+
+          <div class="order-dates">
+            <div class="order-date-row">
+              <span class="odr-key">Check In</span>
+              <span class="odr-val" id="sum-ci">—</span>
+            </div>
+            <div class="order-date-row">
+              <span class="odr-key">Check Out</span>
+              <span class="odr-val" id="sum-co">—</span>
+            </div>
+            <div class="order-date-row">
+              <span class="odr-key">Duration</span>
+              <span class="odr-val" id="sum-nights">2 nights</span>
+            </div>
+          </div>
+
+          <div class="price-row">
+            <span>$180 × <span id="sum-n">2</span> nights</span>
+            <span id="sum-sub">$360</span>
+          </div>
+          <div class="price-row">
+            <span>Taxes &amp; fees (10%)</span>
+            <span id="sum-tax">$36</span>
+          </div>
+          <div class="price-row total">
+            <span>Total</span>
+            <span class="price-amt" id="sum-total">$396</span>
+          </div>
+
+          <div class="order-incl">
+            <div class="order-incl-title">Included</div>
+            <ul>
+              <li>Daily breakfast for 2</li>
+              <li>Free WiFi throughout</li>
+              <li>Free cancellation 48h prior</li>
+              <li>WhatsApp host support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- SUCCESS OVERLAY -->
+  <div class="overlay" id="overlay">
+    <div class="success-box">
+      <div class="success-ring">✓</div>
+      <h2 class="success-title">Booking Confirmed!</h2>
+      <p class="success-sub">Thank you for booking directly with The Shore. We'll send a confirmation to your email and
+        reach out on WhatsApp within 2 hours.</p>
+      <div class="success-detail" id="success-detail"></div>
+      <p class="success-ref">Booking Reference: <span class="ref-code" id="ref-code">SHORE-000000</span></p>
+      <div>
+        <button class="btn-success" onclick="closeOverlay()">Done</button>
+        <a class="btn-home" href="index.html">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">THE <span>SHORE</span></span>
+      <span>Direct bookings only — no platform fees.</span>
+      <span>📍 Da Nang, Vietnam · +84 000 000 000</span>
+    </div>
+  </footer>
+
+  <script>
+    const PRICE = 180, TAX = 0.1;
+    const params = new URLSearchParams(window.location.search);
+
+    // Pre-fill from URL params (passed from details page)
+    const pRoom = params.get('room') || 'Seafront Deluxe';
+    const pCi = params.get('ci');
+    const pCo = params.get('co');
+
+    // Set date inputs
+    const fmt = d => d.toISOString().split('T')[0];
+    const today = new Date();
+    const defCi = new Date(today); defCi.setDate(today.getDate() + 1);
+    const defCo = new Date(today); defCo.setDate(today.getDate() + 3);
+
+    document.getElementById('pay-ci').value = pCi || fmt(defCi);
+    document.getElementById('pay-co').value = pCo || fmt(defCo);
+    document.getElementById('sum-room').textContent = pRoom;
+
+    // Generate booking ref
+    const REF = 'SHORE-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    document.getElementById('bank-ref').textContent = REF;
+    document.getElementById('ref-code').textContent = REF;
+
+    function recalc() {
+      const ci = document.getElementById('pay-ci').value;
+      const co = document.getElementById('pay-co').value;
+      if (!ci || !co) return;
+      const nights = Math.max(1, Math.round((new Date(co) - new Date(ci)) / 86400000));
+      const sub = PRICE * nights;
+      const tax = Math.round(sub * TAX);
+      const tot = sub + tax;
+
+      // Update summary
+      document.getElementById('sum-ci').textContent = ci;
+      document.getElementById('sum-co').textContent = co;
+      document.getElementById('sum-nights').textContent = nights + ' night' + (nights > 1 ? 's' : '');
+      document.getElementById('sum-n').textContent = nights;
+      document.getElementById('sum-sub').textContent = '$' + sub;
+      document.getElementById('sum-tax').textContent = '$' + tax;
+      document.getElementById('sum-total').textContent = '$' + tot;
+
+      // Update payment panels
+      document.getElementById('apple-total').textContent = '$' + tot;
+      document.getElementById('qr-amount').textContent = '$' + tot;
+      document.getElementById('momo-amount').textContent = '$' + tot;
+
+      // Update QR code image
+      document.getElementById('qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=SHORE_${REF}_${tot}USD`;
+    }
+
+    // Init
+    recalc();
+
+    // Payment tabs
+    function setTab(id, btn) {
+      document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.pay-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + id).classList.add('active');
+    }
+
+    // Copy helper
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt).catch(() => { });
+    }
+
+    // Submit
+    function submitBooking() {
+      const fname = document.getElementById('fname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const ci = document.getElementById('pay-ci').value;
+      const co = document.getElementById('pay-co').value;
+
+      // Basic validation
+      let ok = true;
+      ['fname', 'email', 'pay-ci', 'pay-co'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.classList.add('invalid'); ok = false; }
+        else el.classList.remove('invalid');
+      });
+
+      if (!ok) { return; }
+
+      const nights = Math.max(1, Math.round((new Date(co) - new Date(ci)) / 86400000));
+      const tot = (PRICE * nights * (1 + TAX)).toFixed(0);
+      const lname = document.getElementById('lname').value.trim();
+
+      document.getElementById('success-detail').innerHTML = `
+        <div class="sd-row"><span class="sd-key">Guest</span><span class="sd-val">${fname} ${lname}</span></div>
+        <div class="sd-row"><span class="sd-key">Room</span><span class="sd-val">${pRoom}</span></div>
+        <div class="sd-row"><span class="sd-key">Check In</span><span class="sd-val">${ci}</span></div>
+        <div class="sd-row"><span class="sd-key">Check Out</span><span class="sd-val">${co}</span></div>
+        <div class="sd-row"><span class="sd-key">Nights</span><span class="sd-val">${nights}</span></div>
+        <div class="sd-row"><span class="sd-key">Total</span><span class="sd-val" style="color:var(--cyan)">$${tot}</span></div>
+      `;
+
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function closeOverlay() {
+      document.getElementById('overlay').classList.remove('show');
+    }
+  </script>
+
+</body>
+
+</html>

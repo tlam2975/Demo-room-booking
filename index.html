@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Shore — Ocean Boutique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --deep: #030D1B;
+      --navy: #071E38;
+      --surface: rgba(7, 30, 56, 0.70);
+      --border: rgba(0, 212, 255, 0.14);
+      --cyan: #00D4FF;
+      --cyan-dim: rgba(0, 212, 255, 0.18);
+      --cyan-glow: rgba(0, 212, 255, 0.35);
+      --text: #D6EFFA;
+      --muted: #6B96B8;
+      --gold: #F4B45A;
+      --r: 17px;
+      --r-sm: 10px;
+      --r-lg: 28px;
+      --glass: rgba(5, 25, 50, 0.65);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ────── SCROLLBAR ────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    /* ────── NAV ────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: 70px;
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(3, 13, 27, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-logo span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(214, 239, 250, 0.7);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-btn {
+      border: 1.5px solid var(--cyan) !important;
+      color: var(--cyan) !important;
+      padding: 0.45rem 1.3rem;
+      border-radius: 50px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-btn:hover {
+      background: var(--cyan) !important;
+      color: var(--deep) !important;
+    }
+
+    /* ────── HERO ────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .hero-bg-grad {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(ellipse at 50% 60%, rgba(0, 100, 180, 0.25) 0%, rgba(3, 13, 27, 0.6) 70%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 820px;
+      padding: 0 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      color: var(--cyan);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 4.5rem;
+      font-weight: 400;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--cyan);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(214, 239, 250, 0.72);
+      max-width: 520px;
+      margin: 0 auto 2.8rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-search {
+      display: flex;
+      background: rgba(5, 20, 45, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 212, 255, 0.05);
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .hs-field {
+      display: flex;
+      flex-direction: column;
+      padding: 0.9rem 1.4rem;
+      min-width: 145px;
+      border-right: 1px solid var(--border);
+    }
+
+    .hs-field:last-of-type {
+      border-right: none;
+    }
+
+    .hs-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .hs-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 500;
+      width: 100%;
+    }
+
+    .hs-input option {
+      background: var(--navy);
+    }
+
+    .hs-btn {
+      background: var(--cyan);
+      border: none;
+      cursor: pointer;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--deep);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .hs-btn:hover {
+      background: #33DEFF;
+    }
+
+    /* Wave SVG bottom */
+    .hero-wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+    }
+
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(214, 239, 250, 0.45);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: scrollBounce 2s infinite;
+    }
+
+    .scroll-cue svg {
+      opacity: 0.5;
+    }
+
+    @keyframes scrollBounce {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(8px);
+      }
+    }
+
+    /* ────── SECTION BASE ────── */
+    .section {
+      padding: 7rem 3rem;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.7rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 1.1rem;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    /* ────── STATS BAR ────── */
+    .stats-bar {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      border-radius: var(--r);
+      display: flex;
+      justify-content: space-around;
+      padding: 2rem;
+      margin-bottom: 6rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--cyan);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--border);
+    }
+
+    /* ────── FILTER BAR ────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.2rem;
+    }
+
+    .filter-pill {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(8px);
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    .filter-sep {
+      height: 28px;
+      width: 1px;
+      background: var(--border);
+      margin: 0 0.4rem;
+    }
+
+    .price-filter {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .price-range {
+      -webkit-appearance: none;
+      height: 3px;
+      width: 110px;
+      background: linear-gradient(to right, var(--cyan) 60%, rgba(0, 212, 255, 0.2) 60%);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .price-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--cyan);
+      border-radius: 50%;
+      border: 2px solid var(--deep);
+    }
+
+    /* ────── ROOMS GRID ────── */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.8rem;
+    }
+
+    /* 3D Tilt Card */
+    .room-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s ease;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      will-change: transform;
+    }
+
+    .room-card:hover {
+      box-shadow: 0 30px 80px rgba(0, 100, 180, 0.25), 0 0 0 1px rgba(0, 212, 255, 0.2);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.55s ease;
+      filter: brightness(0.88) saturate(1.1);
+    }
+
+    .room-card:hover .card-img {
+      transform: scale(1.06);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(3, 13, 27, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.8rem;
+      border-radius: 50px;
+    }
+
+    .badge-360 {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(0, 212, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--cyan);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.28rem 0.8rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* 3D image float effect */
+    .card-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(3, 13, 27, 0.85) 100%);
+    }
+
+    .card-img-3d-frame {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      z-index: 2;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .room-card:hover .card-img-3d-frame {
+      opacity: 1;
+    }
+
+    .card-body {
+      padding: 1.4rem 1.5rem;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .card-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .star {
+      color: var(--gold);
+    }
+
+    .card-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.1rem;
+    }
+
+    .card-pills {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .pill {
+      background: rgba(0, 212, 255, 0.07);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      color: rgba(0, 212, 255, 0.8);
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.2rem 0.65rem;
+      border-radius: 50px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-price {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-price span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .card-price-note {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .btn-card {
+      background: transparent;
+      border: 1.5px solid var(--cyan);
+      color: var(--cyan);
+      border-radius: var(--r-sm);
+      padding: 0.55rem 1.2rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-card:hover {
+      background: var(--cyan);
+      color: var(--deep);
+    }
+
+    /* ────── NEWS / EVENTS ────── */
+    .news-section {
+      background: linear-gradient(to bottom, var(--deep), #041424);
+      position: relative;
+    }
+
+    .news-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .news-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2.5rem;
+    }
+
+    .news-link {
+      font-size: 0.82rem;
+      color: var(--cyan);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+
+    .news-link:hover {
+      border-color: var(--cyan);
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .news-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .news-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .news-card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.85) saturate(1.2);
+    }
+
+    .news-card.featured .news-card-img {
+      height: 260px;
+    }
+
+    .news-card-body {
+      padding: 1.3rem;
+    }
+
+    .news-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      margin-bottom: 0.7rem;
+    }
+
+    .news-date {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .news-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+    }
+
+    .news-card.featured .news-title {
+      font-size: 1.4rem;
+    }
+
+    .news-excerpt {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ────── EXPERIENCE ROW ────── */
+    .experience-section {
+      background: var(--deep);
+    }
+
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+
+    .exp-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem 1.6rem;
+      backdrop-filter: blur(12px);
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .exp-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .exp-icon {
+      font-size: 2.4rem;
+      margin-bottom: 0.9rem;
+      display: block;
+    }
+
+    .exp-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-text {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ────── FOOTER ────── */
+    footer {
+      background: #020A17;
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .footer-brand {}
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .footer-logo span {
+      color: var(--cyan);
+    }
+
+    .footer-tagline {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 260px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 1.2rem;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .social-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .footer-col h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col li a {
+      font-size: 0.85rem;
+      color: rgba(214, 239, 250, 0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col li a:hover {
+      color: var(--cyan);
+    }
+
+    .footer-bottom {
+      max-width: 1320px;
+      margin: 2.5rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ────── ANIMATIONS ────── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="main-nav">
+    <a href="index.html" class="nav-logo">THE <span>SHORE</span></a>
+    <ul class="nav-links">
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#news">Events</a></li>
+      <li><a href="details.html#location">Location</a></li>
+      <li><a href="details.html" class="nav-btn">Book a Room</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-bg-grad"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">🌊 150m from the Sea · Da Nang, Vietnam</div>
+      <h1>Sleep where the<br><em>ocean breathes</em></h1>
+      <p>A boutique property where every room opens to salt air and horizon. Book direct — no platform, no fees, just
+        you and the sea.</p>
+      <div class="hero-search">
+        <div class="hs-field">
+          <span class="hs-label">Check In</span>
+          <input class="hs-input" type="date" id="hero-ci">
+        </div>
+        <div class="hs-field">
+          <span class="hs-label">Check Out</span>
+          <input class="hs-input" type="date" id="hero-co">
+        </div>
+        <div class="hs-field" style="min-width:110px">
+          <span class="hs-label">Guests</span>
+          <select class="hs-input">
+            <option>1 Guest</option>
+            <option selected>2 Guests</option>
+            <option>3 Guests</option>
+            <option>4 Guests</option>
+          </select>
+        </div>
+        <button class="hs-btn" onclick="document.getElementById('rooms').scrollIntoView({behavior:'smooth'})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          Search
+        </button>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <polyline points="19 12 12 19 5 12" />
+      </svg>
+      Explore
+    </div>
+
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,45 C200,90 400,0 600,50 C800,100 1000,10 1200,50 C1340,75 1400,35 1440,45 L1440,90 L0,90 Z"
+          fill="#030D1B" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ── ROOMS ── -->
+  <section class="section" id="rooms" style="padding-top: 5rem;">
+    <div class="container">
+      <!-- Stats -->
+      <div class="stats-bar fade-in">
+        <div class="stat-item">
+          <span class="stat-num">3</span>
+          <div class="stat-label">Unique Rooms</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">150m</span>
+          <div class="stat-label">To the Beach</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">4.9★</span>
+          <div class="stat-label">Guest Rating</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">360°</span>
+          <div class="stat-label">Virtual Tours</div>
+        </div>
+      </div>
+
+      <!-- Section Header -->
+      <div style="margin-bottom: 2rem;" class="fade-in">
+        <span class="section-eyebrow">Our Rooms</span>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+          <h2 class="section-title" style="margin-bottom:0">Crafted for the sea</h2>
+          <p class="section-sub" style="margin:0">Every room is designed around the view — natural textures, deep blues,
+            and morning light.</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar fade-in">
+        <button class="filter-pill active" onclick="filterRooms('all', this)">All Rooms</button>
+        <button class="filter-pill" onclick="filterRooms('sea', this)">🌊 Sea View</button>
+        <button class="filter-pill" onclick="filterRooms('garden', this)">🌿 Garden</button>
+        <button class="filter-pill" onclick="filterRooms('suite', this)">✦ Suite</button>
+        <div class="filter-sep"></div>
+        <div class="price-filter">
+          <span>Max price</span>
+          <input type="range" class="price-range" min="0" max="400" value="300"
+            oninput="this.previousElementSibling.nextElementSibling.nextElementSibling.textContent = '$'+this.value">
+          <span id="price-disp">$300</span>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="rooms-grid" id="rooms-grid">
+
+        <a href="details.html" class="room-card" data-type="sea">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://picsum.photos/seed/oceandeluxe1/700/460" alt="Seafront Deluxe">
+            <span class="card-badge">🌊 Sea View</span>
+            <span class="badge-360">⟳ 360°</span>
+            <div class="card-img-3d-frame"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <h3 class="card-name">Seafront Deluxe</h3>
+              <div class="card-rating"><span class="star">★</span> 4.9 <span
+                  style="opacity:.45; margin-left:2px">(42)</span></div>
+            </div>
+            <p class="card-desc">A king bed facing the horizon. Private balcony, rain shower, freestanding bathtub. 80m
+              from the waves.</p>
+            <div class="card-pills">
+              <span class="pill">❄️ AC</span>
+              <span class="pill">📶 WiFi</span>
+              <span class="pill">🛁 Bathtub</span>
+              <span class="pill">🌅 Balcony</span>
+            </div>
+            <div class="card-footer">
+              <div>
+                <div class="card-price">$180 <span>/ night</span></div>
+                <div class="card-price-note">Breakfast included</div>
+              </div>
+              <span class="btn-card">View Room</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="details.html" class="room-card" data-type="garden">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://picsum.photos/seed/gardenstudio99/700/460" alt="Garden Studio">
+            <span class="card-badge">🌿 Garden</span>
+            <span class="badge-360">⟳ 360°</span>
+            <div class="card-img-3d-frame"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <h3 class="card-name">Garden Studio</h3>
+              <div class="card-rating"><span class="star">★</span> 4.7 <span
+                  style="opacity:.45; margin-left:2px">(28)</span></div>
+            </div>
+            <p class="card-desc">Surrounded by tropical greenery with a private hammock terrace. Your quiet escape, 150m
+              from the sea.</p>
+            <div class="card-pills">
+              <span class="pill">❄️ AC</span>
+              <span class="pill">📶 WiFi</span>
+              <span class="pill">🍳 Kitchenette</span>
+              <span class="pill">🅿️ Parking</span>
+            </div>
+            <div class="card-footer">
+              <div>
+                <div class="card-price">$95 <span>/ night</span></div>
+                <div class="card-price-note">Breakfast optional</div>
+              </div>
+              <span class="btn-card">View Room</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="details.html" class="room-card" data-type="suite sea">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://picsum.photos/seed/sunsetsuite88/700/460" alt="Sunset Suite">
+            <span class="card-badge"
+              style="color:var(--gold); border-color:rgba(244,180,90,0.3); background:rgba(244,180,90,0.1)">✦ Premium
+              Suite</span>
+            <span class="badge-360">⟳ 360°</span>
+            <div class="card-img-3d-frame"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <h3 class="card-name">Sunset Suite</h3>
+              <div class="card-rating"><span class="star">★</span> 5.0 <span
+                  style="opacity:.45; margin-left:2px">(15)</span></div>
+            </div>
+            <p class="card-desc">Floor-to-ceiling glass walls, a soaking tub aimed at the horizon, and the sky bleeding
+              gold at dusk.</p>
+            <div class="card-pills">
+              <span class="pill">❄️ AC</span>
+              <span class="pill">📺 Smart TV</span>
+              <span class="pill">🛁 Soaking Tub</span>
+              <span class="pill">🌅 Sea View</span>
+            </div>
+            <div class="card-footer">
+              <div>
+                <div class="card-price">$260 <span>/ night</span></div>
+                <div class="card-price-note">Breakfast &amp; dinner</div>
+              </div>
+              <span class="btn-card">View Room</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCES ── -->
+  <section class="section experience-section" style="padding-top:0">
+    <div class="container">
+      <div style="margin-bottom: 2.5rem;" class="fade-in">
+        <span class="section-eyebrow">Staying With Us</span>
+        <h2 class="section-title">More than a room</h2>
+      </div>
+      <div class="exp-grid fade-in">
+        <div class="exp-card">
+          <span class="exp-icon">🚣</span>
+          <div class="exp-title">Sunrise Kayaking</div>
+          <p class="exp-text">Guided sea kayak tour every morning at 6am. Paddle out to the sandbar and watch the sun
+            come up over the water.</p>
+        </div>
+        <div class="exp-card">
+          <span class="exp-icon">🍜</span>
+          <div class="exp-title">Local Food Walks</div>
+          <p class="exp-text">Join our evening street food tour. Bánh mì, bún bò, and more — guided by someone who grew
+            up eating it.</p>
+        </div>
+        <div class="exp-card">
+          <span class="exp-icon">🌅</span>
+          <div class="exp-title">Rooftop Sunset Session</div>
+          <p class="exp-text">Every Friday evening. Cold drinks, a DJ, and the whole horizon turning orange. Open to all
+            guests, no booking needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEWS / EVENTS ── -->
+  <section class="section news-section" id="news">
+    <div class="container">
+      <div class="news-header fade-in">
+        <div>
+          <span class="section-eyebrow">What's On</span>
+          <h2 class="section-title" style="margin-bottom:0">Events &amp; News</h2>
+        </div>
+        <a href="#" class="news-link">All updates →</a>
+      </div>
+
+      <div class="news-grid fade-in">
+        <!-- Featured -->
+        <div class="news-card featured">
+          <img class="news-card-img" src="https://picsum.photos/seed/beachfest2025/800/500" alt="Beach Festival">
+          <div class="news-card-body">
+            <span class="news-tag">Event</span>
+            <div class="news-date">15 April 2025 · Da Nang</div>
+            <h3 class="news-title">Da Nang International Fireworks Festival Returns This Summer</h3>
+            <p class="news-excerpt">The city's most iconic event is back — six nights of world-class fireworks over the
+              Han River. Book your stay now to secure a room during peak nights, before they're gone.</p>
+          </div>
+        </div>
+
+        <!-- Small card 1 -->
+        <div class="news-card">
+          <img class="news-card-img" src="https://picsum.photos/seed/sunriseyoga/600/400" alt="Yoga">
+          <div class="news-card-body">
+            <span class="news-tag">Weekly</span>
+            <div class="news-date">Every Tuesday, 7am</div>
+            <h3 class="news-title">Sunrise Beach Yoga</h3>
+            <p class="news-excerpt">Free for all Shore guests. Mat, ocean breeze, and the sunrise. Hosted by our
+              in-house instructor.</p>
+          </div>
+        </div>
+
+        <!-- Small card 2 -->
+        <div class="news-card">
+          <img class="news-card-img" src="https://picsum.photos/seed/newmenulaunch/600/400" alt="Menu">
+          <div class="news-card-body">
+            <span class="news-tag">Property News</span>
+            <div class="news-date">From 1 March 2025</div>
+            <h3 class="news-title">New Breakfast Menu — Local Flavours</h3>
+            <p class="news-excerpt">We've partnered with a local chef to bring seasonal Vietnamese breakfast to all
+              guests every morning.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">THE <span>SHORE</span></span>
+        <p class="footer-tagline">A boutique ocean property in Da Nang. Book directly with us and skip the platform fees
+          entirely.</p>
+        <div class="footer-social">
+          <a class="social-btn" href="#" title="Instagram">✦</a>
+          <a class="social-btn" href="#" title="Facebook">f</a>
+          <a class="social-btn" href="#" title="TikTok">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#rooms">Our Rooms</a></li>
+          <li><a href="details.html#location">Location</a></li>
+          <li><a href="#news">Events</a></li>
+          <li><a href="details.html">Virtual Tour</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Book</h4>
+        <ul>
+          <li><a href="details.html">Seafront Deluxe</a></li>
+          <li><a href="details.html">Garden Studio</a></li>
+          <li><a href="details.html">Sunset Suite</a></li>
+          <li><a href="payment.html">Pay Now</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">📍 150m My Khe Beach</a></li>
+          <li><a href="#">📞 +84 000 000 000</a></li>
+          <li><a href="#">✉ hello@theshore.vn</a></li>
+          <li><a href="#">💬 WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 The Shore. All rights reserved.</span>
+      <span>Direct bookings only — no platform fees.</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Three.js Ocean Hero ──
+    (function () {
+      const canvas = document.getElementById('hero-canvas');
+      const hero = document.querySelector('.hero');
+      const W = window.innerWidth, H = hero.offsetHeight;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
+      camera.position.set(0, 12, 28);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(W, H);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Ambient + directional light
+      scene.add(new THREE.AmbientLight(0x001a66, 1.5));
+      const dl = new THREE.DirectionalLight(0x00aaff, 2.5);
+      dl.position.set(5, 10, 8);
+      scene.add(dl);
+      const dl2 = new THREE.DirectionalLight(0x0033aa, 1.5);
+      dl2.position.set(-8, 5, -5);
+      scene.add(dl2);
+
+      // Ocean wave plane (wireframe)
+      const wGeo = new THREE.PlaneGeometry(100, 80, 80, 60);
+      const wMat = new THREE.MeshPhongMaterial({
+        color: 0x003366, wireframe: true, transparent: true, opacity: 0.22
+      });
+      const waveMesh = new THREE.Mesh(wGeo, wMat);
+      waveMesh.rotation.x = -Math.PI / 2.4;
+      waveMesh.position.y = -8;
+      scene.add(waveMesh);
+
+      // Ocean wave plane (solid, darker)
+      const wGeo2 = new THREE.PlaneGeometry(100, 80, 40, 30);
+      const wMat2 = new THREE.MeshPhongMaterial({
+        color: 0x001133, transparent: true, opacity: 0.55
+      });
+      const waveMesh2 = new THREE.Mesh(wGeo2, wMat2);
+      waveMesh2.rotation.x = -Math.PI / 2.4;
+      waveMesh2.position.y = -8.1;
+      scene.add(waveMesh2);
+
+      // Glowing particles
+      const pCount = 1800;
+      const pPos = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount; i++) {
+        pPos[i * 3] = (Math.random() - 0.5) * 120;
+        pPos[i * 3 + 1] = (Math.random() - 0.5) * 60;
+        pPos[i * 3 + 2] = (Math.random() - 0.5) * 60;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0x00D4FF, size: 0.18, transparent: true, opacity: 0.55 });
+      const particles = new THREE.Points(pGeo, pMat);
+      scene.add(particles);
+
+      // Animate
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        // Animate wave plane vertices
+        const pos1 = wGeo.attributes.position;
+        const pos2 = wGeo2.attributes.position;
+        for (let i = 0; i < pos1.count; i++) {
+          const x = pos1.getX(i), y = pos1.getY(i);
+          const z = Math.sin(x * 0.12 + t * 0.9) * 1.8 + Math.cos(y * 0.18 + t * 0.7) * 1.2;
+          pos1.setZ(i, z);
+        }
+        pos1.needsUpdate = true;
+        for (let i = 0; i < pos2.count; i++) {
+          const x = pos2.getX(i), y = pos2.getY(i);
+          const z = Math.sin(x * 0.12 + t * 0.9 + 0.3) * 1.8 + Math.cos(y * 0.18 + t * 0.7 + 0.3) * 1.2;
+          pos2.setZ(i, z);
+        }
+        pos2.needsUpdate = true;
+
+        particles.rotation.y = t * 0.025;
+        particles.rotation.x = Math.sin(t * 0.05) * 0.05;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Resize
+      window.addEventListener('resize', () => {
+        const W2 = window.innerWidth, H2 = hero.offsetHeight;
+        camera.aspect = W2 / H2;
+        camera.updateProjectionMatrix();
+        renderer.setSize(W2, H2);
+      });
+    })();
+
+    // ── Sticky Nav on scroll ──
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── 3D card tilt ──
+    document.querySelectorAll('.room-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-6px) scale(1.01)`;
+        card.style.boxShadow = `${-x * 22}px ${-y * 22}px 50px rgba(0,180,255,0.12)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateY(0) rotateX(0) translateY(0) scale(1)';
+        card.style.boxShadow = '';
+        card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+        setTimeout(() => { card.style.transition = ''; }, 500);
+      });
+      card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+    });
+
+    // ── Filter ──
+    function filterRooms(type, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.room-card').forEach(card => {
+        const t = card.dataset.type || '';
+        card.style.display = (type === 'all' || t.includes(type)) ? 'block' : 'none';
+      });
+    }
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Default dates ──
+    const fmt = d => d.toISOString().split('T')[0];
+    const t = new Date();
+    const ci = new Date(t); ci.setDate(t.getDate() + 1);
+    const co = new Date(t); co.setDate(t.getDate() + 3);
+    document.getElementById('hero-ci').value = fmt(ci);
+    document.getElementById('hero-co').value = fmt(co);
+  </script>
+</body>
+
+</html>
