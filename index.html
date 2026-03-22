@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -19,41 +19,71 @@
       padding: 0;
     }
 
-    :root {
-      --deep: #030D1B;
-      --navy: #071E38;
-      --surface: rgba(7, 30, 56, 0.70);
-      --border: rgba(0, 212, 255, 0.14);
-      --cyan: #00D4FF;
-      --cyan-dim: rgba(0, 212, 255, 0.18);
-      --cyan-glow: rgba(0, 212, 255, 0.35);
-      --text: #D6EFFA;
-      --muted: #6B96B8;
-      --gold: #F4B45A;
-      --r: 17px;
-      --r-sm: 10px;
-      --r-lg: 28px;
-      --glass: rgba(5, 25, 50, 0.65);
+    /* ── THEME TOKENS ── */
+    :root,
+    [data-theme="light"] {
+      --bg: #F5EFE3;
+      --bg2: #EDE4D4;
+      --surface: #FFFBF5;
+      --surface2: #F9F2E7;
+      --border: rgba(160, 120, 70, 0.18);
+      --border-h: rgba(160, 120, 70, 0.42);
+      --accent: #B06A20;
+      --accent-h: #904F10;
+      --accent-dim: rgba(176, 106, 32, 0.10);
+      --text: #2C1810;
+      --text2: #5C4030;
+      --muted: #8B6B50;
+      --gold: #C4922A;
+      --shadow: rgba(80, 50, 20, 0.10);
+      --shadow-md: rgba(80, 50, 20, 0.18);
+      --nav-bg: rgba(245, 239, 227, 0.93);
+      --glass: rgba(255, 251, 245, 0.75);
+      --hero-grad: radial-gradient(ellipse at 50% 60%, rgba(200, 160, 70, 0.20) 0%, rgba(245, 239, 227, 0.52) 72%);
+      --wave-clr: #F5EFE3;
     }
 
+    [data-theme="dark"] {
+      --bg: #030D1B;
+      --bg2: #041424;
+      --surface: rgba(5, 25, 50, 0.65);
+      --surface2: rgba(7, 30, 56, 0.70);
+      --border: rgba(0, 212, 255, 0.14);
+      --border-h: rgba(0, 212, 255, 0.36);
+      --accent: #00D4FF;
+      --accent-h: #33DEFF;
+      --accent-dim: rgba(0, 212, 255, 0.12);
+      --text: #D6EFFA;
+      --text2: #A8CCE0;
+      --muted: #6B96B8;
+      --gold: #F4B45A;
+      --shadow: rgba(0, 0, 0, 0.30);
+      --shadow-md: rgba(0, 0, 0, 0.50);
+      --nav-bg: rgba(3, 13, 27, 0.93);
+      --glass: rgba(5, 25, 50, 0.65);
+      --hero-grad: radial-gradient(ellipse at 50% 60%, rgba(0, 100, 180, 0.25) 0%, rgba(3, 13, 27, 0.62) 72%);
+      --wave-clr: #030D1B;
+    }
+
+    /* ── BASE ── */
     html {
       scroll-behavior: smooth;
     }
 
     body {
       font-family: 'Outfit', sans-serif;
-      background: var(--deep);
+      background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
+      transition: background .35s, color .35s;
     }
 
-    /* ────── SCROLLBAR ────── */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
 
     ::-webkit-scrollbar-track {
-      background: var(--deep);
+      background: var(--bg);
     }
 
     ::-webkit-scrollbar-thumb {
@@ -61,86 +91,214 @@
       border-radius: 3px;
     }
 
-    /* ────── NAV ────── */
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 200;
-      height: 70px;
-      padding: 0 3rem;
+      z-index: 300;
+      height: 68px;
+      padding: 0 2.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
       border-bottom: 1px solid transparent;
+      transition: background .4s, backdrop-filter .4s, border-color .4s, box-shadow .4s;
     }
 
     nav.scrolled {
-      background: rgba(3, 13, 27, 0.88);
+      background: var(--nav-bg);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-color: var(--border);
+      box-shadow: 0 4px 28px var(--shadow);
     }
 
     .nav-logo {
       font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 500;
-      color: #fff;
+      color: var(--text);
       text-decoration: none;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
     }
 
     .nav-logo span {
-      color: var(--cyan);
+      color: var(--accent);
     }
 
-    .nav-links {
+    .nav-center {
       display: flex;
-      gap: 2.2rem;
-      list-style: none;
       align-items: center;
+      gap: 2rem;
+      list-style: none;
     }
 
-    .nav-links a {
-      font-size: 0.82rem;
+    .nav-center a {
+      font-size: .8rem;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      color: rgba(214, 239, 250, 0.7);
+      color: var(--muted);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color .2s;
     }
 
-    .nav-links a:hover {
-      color: var(--cyan);
+    .nav-center a:hover {
+      color: var(--accent);
     }
 
-    .nav-btn {
-      border: 1.5px solid var(--cyan) !important;
-      color: var(--cyan) !important;
-      padding: 0.45rem 1.3rem;
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+    }
+
+    /* Theme toggle pill */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
       border-radius: 50px;
-      transition: background 0.2s, color 0.2s !important;
+      padding: .3rem .6rem;
+      cursor: pointer;
+      font-size: .78rem;
+      color: var(--muted);
+      transition: all .25s;
     }
 
-    .nav-btn:hover {
-      background: var(--cyan) !important;
-      color: var(--deep) !important;
+    .theme-toggle:hover {
+      border-color: var(--border-h);
     }
 
-    /* ────── HERO ────── */
+    .toggle-knob {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .65rem;
+      transition: transform .3s;
+      flex-shrink: 0;
+    }
+
+    .nav-book {
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      padding: .45rem 1.2rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-size: .78rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s, color .2s;
+    }
+
+    .nav-book:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile overlay menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--surface);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu a {
+      font-family: 'Cinzel', serif;
+      font-size: 1.55rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--accent);
+    }
+
+    .mob-book {
+      border: 2px solid var(--accent) !important;
+      color: var(--accent) !important;
+      padding: .65rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 700;
+    }
+
+    .mob-theme {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .5rem;
+    }
+
+    /* ── HERO ── */
     .hero {
       position: relative;
       width: 100%;
       height: 100vh;
-      min-height: 700px;
-      overflow: hidden;
+      min-height: 620px;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     #hero-canvas {
@@ -151,78 +309,85 @@
       z-index: 0;
     }
 
-    .hero-bg-grad {
+    .hero-grad {
       position: absolute;
       inset: 0;
       z-index: 1;
-      background: radial-gradient(ellipse at 50% 60%, rgba(0, 100, 180, 0.25) 0%, rgba(3, 13, 27, 0.6) 70%);
+      background: var(--hero-grad);
+      transition: background .35s;
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
-      max-width: 820px;
-      padding: 0 2rem;
+      max-width: 800px;
+      padding: 0 1.5rem;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(0, 212, 255, 0.1);
+      gap: .5rem;
+      background: var(--glass);
       border: 1px solid var(--border);
-      backdrop-filter: blur(8px);
-      color: var(--cyan);
-      font-size: 0.7rem;
+      backdrop-filter: blur(10px);
+      color: var(--accent);
+      font-size: .68rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      letter-spacing: .15em;
       text-transform: uppercase;
-      padding: 0.4rem 1.2rem;
+      padding: .38rem 1.1rem;
       border-radius: 50px;
-      margin-bottom: 1.8rem;
-      animation: fadeUp 0.8s ease both;
+      margin-bottom: 1.6rem;
+      animation: fadeUp .8s ease both;
     }
 
     .hero h1 {
       font-family: 'Cinzel', serif;
-      font-size: 4.5rem;
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
       font-weight: 400;
-      line-height: 1.1;
-      color: #fff;
-      margin-bottom: 1.2rem;
-      animation: fadeUp 0.8s 0.15s ease both;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      transition: color .35s;
+      animation: fadeUp .8s .15s ease both;
     }
 
     .hero h1 em {
       font-style: italic;
-      color: var(--cyan);
+      color: var(--accent);
     }
 
     .hero p {
-      font-size: 1.05rem;
-      color: rgba(214, 239, 250, 0.72);
-      max-width: 520px;
-      margin: 0 auto 2.8rem;
-      animation: fadeUp 0.8s 0.3s ease both;
+      font-size: clamp(.88rem, 2vw, 1rem);
+      color: var(--text2);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+      animation: fadeUp .8s .3s ease both;
+      transition: color .35s;
     }
 
     .hero-search {
       display: flex;
-      background: rgba(5, 20, 45, 0.85);
-      backdrop-filter: blur(20px);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: 17px;
       overflow: hidden;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 212, 255, 0.05);
-      animation: fadeUp 0.8s 0.45s ease both;
+      box-shadow: 0 16px 60px var(--shadow-md);
+      max-width: 640px;
+      margin: 0 auto;
+      animation: fadeUp .8s .45s ease both;
+      transition: background .35s, border-color .35s;
     }
 
     .hs-field {
       display: flex;
       flex-direction: column;
-      padding: 0.9rem 1.4rem;
-      min-width: 145px;
+      padding: .85rem 1.2rem;
+      flex: 1;
+      min-width: 110px;
       border-right: 1px solid var(--border);
     }
 
@@ -231,12 +396,12 @@
     }
 
     .hs-label {
-      font-size: 0.62rem;
+      font-size: .6rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.25rem;
+      margin-bottom: .2rem;
     }
 
     .hs-input {
@@ -244,44 +409,46 @@
       outline: none;
       background: transparent;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.88rem;
+      font-size: .86rem;
       color: var(--text);
       font-weight: 500;
       width: 100%;
     }
 
     .hs-input option {
-      background: var(--navy);
+      background: var(--surface);
     }
 
     .hs-btn {
-      background: var(--cyan);
+      background: var(--accent);
       border: none;
       cursor: pointer;
-      padding: 0 2rem;
+      padding: 0 1.6rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: .84rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: #fff;
+      transition: background .2s;
+      white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: var(--deep);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      transition: background 0.2s;
-      white-space: nowrap;
+      gap: .5rem;
+      min-width: 110px;
+      justify-content: center;
     }
 
     .hs-btn:hover {
-      background: #33DEFF;
+      background: var(--accent-h);
     }
 
-    /* Wave SVG bottom */
     .hero-wave {
       position: absolute;
       bottom: -1px;
       left: 0;
       right: 0;
       z-index: 3;
+      line-height: 0;
     }
 
     .hero-wave svg {
@@ -289,26 +456,25 @@
       width: 100%;
     }
 
-    /* Scroll cue */
+    .wfill {
+      transition: fill .35s;
+    }
+
     .scroll-cue {
       position: absolute;
-      bottom: 100px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      color: rgba(214, 239, 250, 0.45);
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
+      gap: .4rem;
+      color: var(--muted);
+      font-size: .65rem;
+      letter-spacing: .12em;
       text-transform: uppercase;
-      animation: scrollBounce 2s infinite;
-    }
-
-    .scroll-cue svg {
-      opacity: 0.5;
+      animation: scrollBounce 2.2s ease-in-out infinite;
     }
 
     @keyframes scrollBounce {
@@ -316,58 +482,65 @@
       0%,
       100% {
         transform: translateX(-50%) translateY(0);
+        opacity: .6
       }
 
       50% {
         transform: translateX(-50%) translateY(8px);
+        opacity: 1
       }
     }
 
-    /* ────── SECTION BASE ────── */
+    /* ── SECTIONS ── */
     .section {
-      padding: 7rem 3rem;
+      padding: clamp(3rem, 8vw, 7rem) clamp(1.2rem, 4vw, 3rem);
     }
 
     .container {
-      max-width: 1320px;
+      max-width: 1300px;
       margin: 0 auto;
     }
 
-    .section-eyebrow {
-      font-size: 0.68rem;
+    .eyebrow {
+      font-size: .66rem;
       font-weight: 700;
-      letter-spacing: 0.2em;
+      letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.7rem;
+      color: var(--accent);
+      margin-bottom: .6rem;
       display: block;
     }
 
     .section-title {
       font-family: 'Cinzel', serif;
-      font-size: 2.4rem;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
       font-weight: 400;
-      color: #fff;
-      margin-bottom: 1.1rem;
+      color: var(--text);
+      margin-bottom: 1rem;
       line-height: 1.2;
+      transition: color .35s;
     }
 
     .section-sub {
-      font-size: 0.95rem;
+      font-size: .92rem;
       color: var(--muted);
-      max-width: 560px;
+      max-width: 520px;
+      line-height: 1.7;
+      transition: color .35s;
     }
 
-    /* ────── STATS BAR ────── */
+    /* Stats */
     .stats-bar {
-      background: var(--glass);
+      background: var(--surface);
       border: 1px solid var(--border);
-      backdrop-filter: blur(16px);
-      border-radius: var(--r);
-      display: flex;
-      justify-content: space-around;
-      padding: 2rem;
-      margin-bottom: 6rem;
+      border-radius: 17px;
+      padding: clamp(1.2rem, 3vw, 2rem);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 5rem;
+      box-shadow: 0 4px 24px var(--shadow);
+      transition: background .35s, border-color .35s;
     }
 
     .stat-item {
@@ -376,119 +549,122 @@
 
     .stat-num {
       font-family: 'Cinzel', serif;
-      font-size: 2.4rem;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
       font-weight: 600;
-      color: var(--cyan);
+      color: var(--accent);
       display: block;
       line-height: 1;
     }
 
     .stat-label {
-      font-size: 0.78rem;
+      font-size: .74rem;
       color: var(--muted);
-      margin-top: 0.3rem;
-      letter-spacing: 0.05em;
+      margin-top: .3rem;
+      letter-spacing: .04em;
     }
 
-    .stat-divider {
-      width: 1px;
-      background: var(--border);
-    }
-
-    /* ────── FILTER BAR ────── */
+    /* Filter bar */
     .filter-bar {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-bottom: 2.2rem;
+      gap: .55rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: .3rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      height: 0;
     }
 
     .filter-pill {
-      background: var(--glass);
-      border: 1px solid var(--border);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
       color: var(--muted);
       font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
+      font-size: .8rem;
       font-weight: 500;
-      padding: 0.5rem 1.2rem;
+      padding: .46rem 1.1rem;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.2s;
-      backdrop-filter: blur(8px);
+      transition: all .2s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .filter-pill:hover,
     .filter-pill.active {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: var(--cyan-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
     }
 
     .filter-sep {
-      height: 28px;
       width: 1px;
+      height: 24px;
       background: var(--border);
-      margin: 0 0.4rem;
+      flex-shrink: 0;
+      margin: 0 .2rem;
     }
 
     .price-filter {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.82rem;
+      gap: .5rem;
+      font-size: .8rem;
       color: var(--muted);
+      flex-shrink: 0;
     }
 
     .price-range {
       -webkit-appearance: none;
       height: 3px;
-      width: 110px;
-      background: linear-gradient(to right, var(--cyan) 60%, rgba(0, 212, 255, 0.2) 60%);
+      width: 100px;
       border-radius: 2px;
       outline: none;
       cursor: pointer;
+      background: linear-gradient(to right, var(--accent) 60%, var(--border) 60%);
     }
 
     .price-range::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 14px;
       height: 14px;
-      background: var(--cyan);
+      background: var(--accent);
       border-radius: 50%;
-      border: 2px solid var(--deep);
+      border: 2px solid var(--bg);
     }
 
-    /* ────── ROOMS GRID ────── */
+    /* ── ROOM CARDS ── */
     .rooms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: 1.6rem;
     }
 
-    /* 3D Tilt Card */
     .room-card {
-      background: var(--glass);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: 17px;
       overflow: hidden;
       display: block;
       text-decoration: none;
       color: inherit;
-      transition: box-shadow 0.15s ease;
+      box-shadow: 0 4px 20px var(--shadow);
+      transition: transform .15s, box-shadow .15s, background .35s, border-color .35s;
+      will-change: transform;
       transform-style: preserve-3d;
       cursor: pointer;
-      backdrop-filter: blur(14px);
-      will-change: transform;
     }
 
     .room-card:hover {
-      box-shadow: 0 30px 80px rgba(0, 100, 180, 0.25), 0 0 0 1px rgba(0, 212, 255, 0.2);
+      box-shadow: 0 20px 50px var(--shadow-md);
     }
 
     .card-img-wrap {
       position: relative;
-      height: 230px;
+      height: 220px;
       overflow: hidden;
     }
 
@@ -496,98 +672,96 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.55s ease;
-      filter: brightness(0.88) saturate(1.1);
+      transition: transform .5s;
+      display: block;
     }
 
     .room-card:hover .card-img {
       transform: scale(1.06);
     }
 
-    .card-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: rgba(3, 13, 27, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      color: var(--cyan);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.28rem 0.8rem;
-      border-radius: 50px;
-    }
-
-    .badge-360 {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(0, 212, 255, 0.15);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      color: var(--cyan);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 0.28rem 0.8rem;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    /* 3D image float effect */
     .card-img-wrap::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(3, 13, 27, 0.85) 100%);
+      background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, .30) 100%);
     }
 
-    .card-img-3d-frame {
+    .card-badge {
       position: absolute;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
+      top: 12px;
+      left: 12px;
       z-index: 2;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
+      background: var(--surface);
+      color: var(--accent);
+      font-size: .63rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .24rem .7rem;
+      border-radius: 50px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
     }
 
-    .room-card:hover .card-img-3d-frame {
+    .badge-360 {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: .63rem;
+      font-weight: 700;
+      padding: .24rem .7rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .card-shine {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 3;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .room-card:hover .card-shine {
       opacity: 1;
     }
 
     .card-body {
-      padding: 1.4rem 1.5rem;
+      padding: 1.3rem 1.4rem;
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 0.4rem;
+      margin-bottom: .4rem;
     }
 
     .card-name {
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 500;
-      color: #fff;
+      color: var(--text);
       line-height: 1.2;
+      transition: color .35s;
     }
 
     .card-rating {
+      font-size: .78rem;
+      color: var(--muted);
       display: flex;
       align-items: center;
-      gap: 0.2rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-      white-space: nowrap;
+      gap: .2rem;
       padding-top: 2px;
     }
 
@@ -596,382 +770,472 @@
     }
 
     .card-desc {
-      font-size: 0.84rem;
+      font-size: .83rem;
       color: var(--muted);
       line-height: 1.6;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1rem;
     }
 
     .card-pills {
       display: flex;
-      gap: 0.4rem;
+      gap: .4rem;
       flex-wrap: wrap;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
     }
 
     .pill {
-      background: rgba(0, 212, 255, 0.07);
-      border: 1px solid rgba(0, 212, 255, 0.12);
-      color: rgba(0, 212, 255, 0.8);
-      font-size: 0.68rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(176, 106, 32, .15);
+      color: var(--accent);
+      font-size: .67rem;
       font-weight: 500;
-      padding: 0.2rem 0.65rem;
+      padding: .18rem .6rem;
       border-radius: 50px;
+    }
+
+    [data-theme="dark"] .pill {
+      background: rgba(0, 212, 255, .07);
+      border-color: rgba(0, 212, 255, .12);
+      color: rgba(0, 212, 255, .8);
     }
 
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 1.1rem;
+      padding-top: 1rem;
       border-top: 1px solid var(--border);
     }
 
     .card-price {
-      font-size: 1.35rem;
+      font-size: 1.28rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
+      transition: color .35s;
     }
 
     .card-price span {
-      font-size: 0.75rem;
+      font-size: .73rem;
       font-weight: 400;
       color: var(--muted);
     }
 
     .card-price-note {
-      font-size: 0.68rem;
+      font-size: .67rem;
       color: var(--muted);
     }
 
     .btn-card {
-      background: transparent;
-      border: 1.5px solid var(--cyan);
-      color: var(--cyan);
-      border-radius: var(--r-sm);
-      padding: 0.55rem 1.2rem;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      border-radius: 10px;
+      padding: .5rem 1.1rem;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
+      font-size: .8rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all .2s;
       text-decoration: none;
       display: inline-block;
-      letter-spacing: 0.04em;
     }
 
     .btn-card:hover {
-      background: var(--cyan);
-      color: var(--deep);
+      background: var(--accent);
+      color: #fff;
     }
 
-    /* ────── NEWS / EVENTS ────── */
+    /* ── EXPERIENCES ── */
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.3rem;
+    }
+
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 3px 16px var(--shadow);
+      transition: transform .2s, border-color .2s, background .35s;
+    }
+
+    .exp-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-h);
+    }
+
+    .exp-icon {
+      font-size: 2.2rem;
+      margin-bottom: .8rem;
+      display: block;
+    }
+
+    .exp-title {
+      font-family: 'Cinzel', serif;
+      font-size: .95rem;
+      color: var(--text);
+      margin-bottom: .5rem;
+      transition: color .35s;
+    }
+
+    .exp-text {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── NEWS ── */
     .news-section {
-      background: linear-gradient(to bottom, var(--deep), #041424);
-      position: relative;
-    }
-
-    .news-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      background: var(--bg2);
+      transition: background .35s;
     }
 
     .news-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2.2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .news-link {
-      font-size: 0.82rem;
-      color: var(--cyan);
+      font-size: .82rem;
+      color: var(--accent);
       text-decoration: none;
       font-weight: 500;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+      border-bottom: 1px solid var(--border);
       padding-bottom: 2px;
-      transition: border-color 0.2s;
+      transition: border-color .2s;
     }
 
     .news-link:hover {
-      border-color: var(--cyan);
+      border-color: var(--accent);
     }
 
     .news-grid {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
-      gap: 1.5rem;
-      align-items: start;
+      gap: 1.4rem;
     }
 
     .news-card {
-      background: var(--glass);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: 17px;
       overflow: hidden;
-      backdrop-filter: blur(14px);
-      transition: border-color 0.2s, transform 0.2s;
+      box-shadow: 0 3px 16px var(--shadow);
+      transition: transform .2s, border-color .2s, background .35s;
     }
 
     .news-card:hover {
-      border-color: rgba(0, 212, 255, 0.3);
       transform: translateY(-3px);
+      border-color: var(--border-h);
     }
 
     .news-card-img {
       width: 100%;
-      height: 200px;
+      height: 190px;
       object-fit: cover;
       display: block;
-      filter: brightness(0.85) saturate(1.2);
     }
 
     .news-card.featured .news-card-img {
-      height: 260px;
+      height: 250px;
     }
 
     .news-card-body {
-      padding: 1.3rem;
+      padding: 1.2rem;
     }
 
     .news-tag {
       display: inline-block;
-      font-size: 0.62rem;
+      font-size: .6rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--cyan);
-      background: var(--cyan-dim);
-      padding: 0.2rem 0.6rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: .18rem .6rem;
       border-radius: 50px;
-      margin-bottom: 0.7rem;
+      margin-bottom: .6rem;
     }
 
     .news-date {
-      font-size: 0.72rem;
+      font-size: .7rem;
       color: var(--muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: .45rem;
     }
 
     .news-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.05rem;
-      font-weight: 400;
-      color: #fff;
+      font-size: 1rem;
+      color: var(--text);
       line-height: 1.4;
-      margin-bottom: 0.6rem;
+      margin-bottom: .55rem;
+      transition: color .35s;
     }
 
     .news-card.featured .news-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
     }
 
     .news-excerpt {
-      font-size: 0.82rem;
+      font-size: .81rem;
       color: var(--muted);
       line-height: 1.6;
     }
 
-    /* ────── EXPERIENCE ROW ────── */
-    .experience-section {
-      background: var(--deep);
-    }
-
-    .exp-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.4rem;
-    }
-
-    .exp-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 2rem 1.6rem;
-      backdrop-filter: blur(12px);
-      text-align: center;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .exp-card:hover {
-      border-color: rgba(0, 212, 255, 0.3);
-      transform: translateY(-4px);
-    }
-
-    .exp-icon {
-      font-size: 2.4rem;
-      margin-bottom: 0.9rem;
-      display: block;
-    }
-
-    .exp-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
-    .exp-text {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ────── FOOTER ────── */
+    /* ── FOOTER ── */
     footer {
-      background: #020A17;
+      background: var(--bg2);
       border-top: 1px solid var(--border);
-      padding: 3.5rem 3rem;
+      padding: 3rem clamp(1.2rem, 4vw, 3rem);
+      transition: background .35s, border-color .35s;
     }
 
-    .footer-inner {
-      max-width: 1320px;
+    .footer-grid {
+      max-width: 1300px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 3rem;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 2.5rem;
     }
 
-    .footer-brand {}
-
-    .footer-logo {
+    .footer-logo-text {
       font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
-      color: #fff;
-      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+      color: var(--text);
       display: block;
+      margin-bottom: .7rem;
+      transition: color .35s;
     }
 
-    .footer-logo span {
-      color: var(--cyan);
+    .footer-logo-text span {
+      color: var(--accent);
     }
 
     .footer-tagline {
-      font-size: 0.83rem;
+      font-size: .82rem;
       color: var(--muted);
       line-height: 1.7;
-      max-width: 260px;
+      max-width: 250px;
     }
 
-    .footer-social {
+    .social-row {
       display: flex;
-      gap: 0.7rem;
-      margin-top: 1.2rem;
+      gap: .6rem;
+      margin-top: 1.1rem;
     }
 
     .social-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: .82rem;
       text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color .2s, color .2s;
     }
 
     .social-btn:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .footer-col h4 {
-      font-size: 0.68rem;
+      font-size: .64rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      letter-spacing: .15em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1.1rem;
+      margin-bottom: 1rem;
     }
 
     .footer-col ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: .55rem;
     }
 
     .footer-col li a {
-      font-size: 0.85rem;
-      color: rgba(214, 239, 250, 0.6);
+      font-size: .83rem;
+      color: var(--text2);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color .2s;
     }
 
     .footer-col li a:hover {
-      color: var(--cyan);
+      color: var(--accent);
     }
 
     .footer-bottom {
-      max-width: 1320px;
-      margin: 2.5rem auto 0;
-      padding-top: 1.5rem;
+      max-width: 1300px;
+      margin: 2rem auto 0;
+      padding-top: 1.3rem;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+      font-size: .76rem;
       color: var(--muted);
     }
 
-    /* ────── ANIMATIONS ────── */
+    /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(22px)
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0)
       }
     }
 
     .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(28px);
+      transition: opacity .7s, transform .7s;
     }
 
     .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px) {
+
+      .nav-center,
+      .nav-book {
+        display: none
+      }
+
+      .hamburger {
+        display: flex
+      }
+
+      .mobile-menu {
+        display: flex
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: 3rem
+      }
+
+      .exp-grid {
+        grid-template-columns: 1fr
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem
+      }
+    }
+
+    @media(max-width:600px) {
+      nav {
+        padding: 0 1.2rem
+      }
+
+      .hero-search {
+        flex-direction: column;
+        border-radius: 14px
+      }
+
+      .hs-field {
+        border-right: none !important;
+        border-bottom: 1px solid var(--border)
+      }
+
+      .hs-btn {
+        padding: 1rem;
+        border-radius: 0 0 14px 14px;
+        min-width: unset
+      }
+
+      .section {
+        padding: 3rem 1.2rem
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .rooms-grid {
+        grid-template-columns: 1fr
+      }
+
+      .filter-bar .price-filter {
+        display: none
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- ── NAV ── -->
   <nav id="main-nav">
     <a href="index.html" class="nav-logo">THE <span>SHORE</span></a>
-    <ul class="nav-links">
+    <ul class="nav-center">
       <li><a href="#rooms">Rooms</a></li>
-      <li><a href="#news">Events</a></li>
+      <li><a href="#events">Events</a></li>
       <li><a href="details.html#location">Location</a></li>
-      <li><a href="details.html" class="nav-btn">Book a Room</a></li>
     </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <span id="theme-icon">☀️</span>
+        <span class="toggle-knob" id="toggle-knob">→</span>
+      </button>
+      <a href="details.html" class="nav-book">Book a Room</a>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    </div>
   </nav>
 
-  <!-- ── HERO ── -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#rooms" onclick="toggleMenu()">Rooms</a>
+    <a href="#events" onclick="toggleMenu()">Events</a>
+    <a href="details.html#location" onclick="toggleMenu()">Location</a>
+    <a href="details.html" class="mob-book" onclick="toggleMenu()">Book a Room</a>
+    <div class="mob-theme">
+      <span>☀️</span>
+      <button class="theme-toggle" onclick="toggleTheme()"><span class="toggle-knob">→</span></button>
+      <span>🌙</span>
+    </div>
+  </div>
+
   <section class="hero">
     <canvas id="hero-canvas"></canvas>
-    <div class="hero-bg-grad"></div>
-
+    <div class="hero-grad"></div>
     <div class="hero-content">
       <div class="hero-badge">🌊 150m from the Sea · Da Nang, Vietnam</div>
       <h1>Sleep where the<br><em>ocean breathes</em></h1>
-      <p>A boutique property where every room opens to salt air and horizon. Book direct — no platform, no fees, just
-        you and the sea.</p>
+      <p>A boutique property where every room opens to salt air and horizon. Book direct — no platform, no fees.</p>
       <div class="hero-search">
         <div class="hs-field">
           <span class="hs-label">Check In</span>
@@ -981,7 +1245,7 @@
           <span class="hs-label">Check Out</span>
           <input class="hs-input" type="date" id="hero-co">
         </div>
-        <div class="hs-field" style="min-width:110px">
+        <div class="hs-field" style="min-width:100px">
           <span class="hs-label">Guests</span>
           <select class="hs-input">
             <option>1 Guest</option>
@@ -1000,277 +1264,219 @@
         </button>
       </div>
     </div>
-
     <div class="scroll-cue">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="5" x2="12" y2="19" />
         <polyline points="19 12 12 19 5 12" />
       </svg>
-      Explore
+      Scroll
     </div>
-
     <div class="hero-wave">
-      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,45 C200,90 400,0 600,50 C800,100 1000,10 1200,50 C1340,75 1400,35 1440,45 L1440,90 L0,90 Z"
-          fill="#030D1B" />
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="wfill" id="wave-path"
+          d="M0,40 C200,80 400,0 600,45 C800,90 1050,10 1260,45 C1360,65 1410,30 1440,40 L1440,80 L0,80 Z" />
       </svg>
     </div>
   </section>
 
-  <!-- ── ROOMS ── -->
-  <section class="section" id="rooms" style="padding-top: 5rem;">
+  <!-- ROOMS -->
+  <section class="section" id="rooms" style="padding-top:4rem">
     <div class="container">
-      <!-- Stats -->
       <div class="stats-bar fade-in">
-        <div class="stat-item">
-          <span class="stat-num">3</span>
+        <div class="stat-item"><span class="stat-num">3</span>
           <div class="stat-label">Unique Rooms</div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">150m</span>
+        <div class="stat-item"><span class="stat-num">150m</span>
           <div class="stat-label">To the Beach</div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">4.9★</span>
+        <div class="stat-item"><span class="stat-num">4.9★</span>
           <div class="stat-label">Guest Rating</div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">360°</span>
+        <div class="stat-item"><span class="stat-num">360°</span>
           <div class="stat-label">Virtual Tours</div>
         </div>
       </div>
-
-      <!-- Section Header -->
-      <div style="margin-bottom: 2rem;" class="fade-in">
-        <span class="section-eyebrow">Our Rooms</span>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+      <div style="margin-bottom:1.8rem" class="fade-in">
+        <span class="eyebrow">Our Rooms</span>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem">
           <h2 class="section-title" style="margin-bottom:0">Crafted for the sea</h2>
-          <p class="section-sub" style="margin:0">Every room is designed around the view — natural textures, deep blues,
-            and morning light.</p>
+          <p class="section-sub" style="margin:0">Every room is designed around the view — natural textures and morning
+            light.</p>
         </div>
       </div>
-
-      <!-- Filter Bar -->
       <div class="filter-bar fade-in">
-        <button class="filter-pill active" onclick="filterRooms('all', this)">All Rooms</button>
-        <button class="filter-pill" onclick="filterRooms('sea', this)">🌊 Sea View</button>
-        <button class="filter-pill" onclick="filterRooms('garden', this)">🌿 Garden</button>
-        <button class="filter-pill" onclick="filterRooms('suite', this)">✦ Suite</button>
+        <button class="filter-pill active" onclick="filterRooms('all',this)">All Rooms</button>
+        <button class="filter-pill" onclick="filterRooms('sea',this)">🌊 Sea View</button>
+        <button class="filter-pill" onclick="filterRooms('garden',this)">🌿 Garden</button>
+        <button class="filter-pill" onclick="filterRooms('suite',this)">✦ Suite</button>
         <div class="filter-sep"></div>
         <div class="price-filter">
           <span>Max price</span>
           <input type="range" class="price-range" min="0" max="400" value="300"
-            oninput="this.previousElementSibling.nextElementSibling.nextElementSibling.textContent = '$'+this.value">
-          <span id="price-disp">$300</span>
+            oninput="document.getElementById('pval').textContent='$'+this.value">
+          <span id="pval">$300</span>
         </div>
       </div>
-
-      <!-- Cards -->
       <div class="rooms-grid" id="rooms-grid">
-
         <a href="details.html" class="room-card" data-type="sea">
           <div class="card-img-wrap">
             <img class="card-img" src="https://picsum.photos/seed/oceandeluxe1/700/460" alt="Seafront Deluxe">
-            <span class="card-badge">🌊 Sea View</span>
-            <span class="badge-360">⟳ 360°</span>
-            <div class="card-img-3d-frame"></div>
+            <span class="card-badge">🌊 Sea View</span><span class="badge-360">⟳ 360°</span>
+            <div class="card-shine"></div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <h3 class="card-name">Seafront Deluxe</h3>
               <div class="card-rating"><span class="star">★</span> 4.9 <span
-                  style="opacity:.45; margin-left:2px">(42)</span></div>
+                  style="opacity:.45;margin-left:2px">(42)</span></div>
             </div>
             <p class="card-desc">A king bed facing the horizon. Private balcony, rain shower, freestanding bathtub. 80m
               from the waves.</p>
-            <div class="card-pills">
-              <span class="pill">❄️ AC</span>
-              <span class="pill">📶 WiFi</span>
-              <span class="pill">🛁 Bathtub</span>
-              <span class="pill">🌅 Balcony</span>
-            </div>
+            <div class="card-pills"><span class="pill">❄️ AC</span><span class="pill">📶 WiFi</span><span
+                class="pill">🛁 Bathtub</span><span class="pill">🌅 Balcony</span></div>
             <div class="card-footer">
               <div>
                 <div class="card-price">$180 <span>/ night</span></div>
                 <div class="card-price-note">Breakfast included</div>
-              </div>
-              <span class="btn-card">View Room</span>
+              </div><span class="btn-card">View Room</span>
             </div>
           </div>
         </a>
-
         <a href="details.html" class="room-card" data-type="garden">
           <div class="card-img-wrap">
             <img class="card-img" src="https://picsum.photos/seed/gardenstudio99/700/460" alt="Garden Studio">
-            <span class="card-badge">🌿 Garden</span>
-            <span class="badge-360">⟳ 360°</span>
-            <div class="card-img-3d-frame"></div>
+            <span class="card-badge">🌿 Garden</span><span class="badge-360">⟳ 360°</span>
+            <div class="card-shine"></div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <h3 class="card-name">Garden Studio</h3>
               <div class="card-rating"><span class="star">★</span> 4.7 <span
-                  style="opacity:.45; margin-left:2px">(28)</span></div>
+                  style="opacity:.45;margin-left:2px">(28)</span></div>
             </div>
-            <p class="card-desc">Surrounded by tropical greenery with a private hammock terrace. Your quiet escape, 150m
-              from the sea.</p>
-            <div class="card-pills">
-              <span class="pill">❄️ AC</span>
-              <span class="pill">📶 WiFi</span>
-              <span class="pill">🍳 Kitchenette</span>
-              <span class="pill">🅿️ Parking</span>
-            </div>
+            <p class="card-desc">Tropical greenery with a private hammock terrace. Your quiet escape, 150m from the sea.
+            </p>
+            <div class="card-pills"><span class="pill">❄️ AC</span><span class="pill">📶 WiFi</span><span
+                class="pill">🍳 Kitchenette</span><span class="pill">🅿️ Parking</span></div>
             <div class="card-footer">
               <div>
                 <div class="card-price">$95 <span>/ night</span></div>
                 <div class="card-price-note">Breakfast optional</div>
-              </div>
-              <span class="btn-card">View Room</span>
+              </div><span class="btn-card">View Room</span>
             </div>
           </div>
         </a>
-
         <a href="details.html" class="room-card" data-type="suite sea">
           <div class="card-img-wrap">
             <img class="card-img" src="https://picsum.photos/seed/sunsetsuite88/700/460" alt="Sunset Suite">
-            <span class="card-badge"
-              style="color:var(--gold); border-color:rgba(244,180,90,0.3); background:rgba(244,180,90,0.1)">✦ Premium
-              Suite</span>
-            <span class="badge-360">⟳ 360°</span>
-            <div class="card-img-3d-frame"></div>
+            <span class="card-badge" style="color:var(--gold)">✦ Suite</span><span class="badge-360">⟳ 360°</span>
+            <div class="card-shine"></div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <h3 class="card-name">Sunset Suite</h3>
               <div class="card-rating"><span class="star">★</span> 5.0 <span
-                  style="opacity:.45; margin-left:2px">(15)</span></div>
+                  style="opacity:.45;margin-left:2px">(15)</span></div>
             </div>
-            <p class="card-desc">Floor-to-ceiling glass walls, a soaking tub aimed at the horizon, and the sky bleeding
-              gold at dusk.</p>
-            <div class="card-pills">
-              <span class="pill">❄️ AC</span>
-              <span class="pill">📺 Smart TV</span>
-              <span class="pill">🛁 Soaking Tub</span>
-              <span class="pill">🌅 Sea View</span>
-            </div>
+            <p class="card-desc">Floor-to-ceiling glass, soaking tub aimed at the horizon, sky bleeding gold at dusk.
+            </p>
+            <div class="card-pills"><span class="pill">❄️ AC</span><span class="pill">📺 Smart TV</span><span
+                class="pill">🛁 Soaking Tub</span><span class="pill">🌅 Sea View</span></div>
             <div class="card-footer">
               <div>
                 <div class="card-price">$260 <span>/ night</span></div>
                 <div class="card-price-note">Breakfast &amp; dinner</div>
-              </div>
-              <span class="btn-card">View Room</span>
+              </div><span class="btn-card">View Room</span>
             </div>
           </div>
         </a>
-
       </div>
     </div>
   </section>
 
-  <!-- ── EXPERIENCES ── -->
-  <section class="section experience-section" style="padding-top:0">
+  <!-- EXPERIENCES -->
+  <section class="section" style="padding-top:0">
     <div class="container">
-      <div style="margin-bottom: 2.5rem;" class="fade-in">
-        <span class="section-eyebrow">Staying With Us</span>
+      <div style="margin-bottom:2.2rem" class="fade-in"><span class="eyebrow">Staying With Us</span>
         <h2 class="section-title">More than a room</h2>
       </div>
       <div class="exp-grid fade-in">
-        <div class="exp-card">
-          <span class="exp-icon">🚣</span>
+        <div class="exp-card"><span class="exp-icon">🚣</span>
           <div class="exp-title">Sunrise Kayaking</div>
-          <p class="exp-text">Guided sea kayak tour every morning at 6am. Paddle out to the sandbar and watch the sun
-            come up over the water.</p>
+          <p class="exp-text">Guided sea kayak every morning at 6am. Paddle to the sandbar and watch the sun come up.
+          </p>
         </div>
-        <div class="exp-card">
-          <span class="exp-icon">🍜</span>
+        <div class="exp-card"><span class="exp-icon">🍜</span>
           <div class="exp-title">Local Food Walks</div>
-          <p class="exp-text">Join our evening street food tour. Bánh mì, bún bò, and more — guided by someone who grew
-            up eating it.</p>
+          <p class="exp-text">Evening street food tour guided by someone who grew up eating it — bánh mì, bún bò, and
+            more.</p>
         </div>
-        <div class="exp-card">
-          <span class="exp-icon">🌅</span>
-          <div class="exp-title">Rooftop Sunset Session</div>
-          <p class="exp-text">Every Friday evening. Cold drinks, a DJ, and the whole horizon turning orange. Open to all
-            guests, no booking needed.</p>
+        <div class="exp-card"><span class="exp-icon">🌅</span>
+          <div class="exp-title">Rooftop Sunsets</div>
+          <p class="exp-text">Every Friday. Cold drinks, music, and the whole horizon turning amber. Open to all guests.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── NEWS / EVENTS ── -->
-  <section class="section news-section" id="news">
+  <!-- NEWS -->
+  <section class="section news-section" id="events">
     <div class="container">
       <div class="news-header fade-in">
-        <div>
-          <span class="section-eyebrow">What's On</span>
+        <div><span class="eyebrow">What's On</span>
           <h2 class="section-title" style="margin-bottom:0">Events &amp; News</h2>
-        </div>
-        <a href="#" class="news-link">All updates →</a>
+        </div><a href="#" class="news-link">All updates →</a>
       </div>
-
       <div class="news-grid fade-in">
-        <!-- Featured -->
         <div class="news-card featured">
-          <img class="news-card-img" src="https://picsum.photos/seed/beachfest2025/800/500" alt="Beach Festival">
-          <div class="news-card-body">
-            <span class="news-tag">Event</span>
+          <img class="news-card-img" src="https://picsum.photos/seed/beachfest2025/800/500" alt="Festival">
+          <div class="news-card-body"><span class="news-tag">Event</span>
             <div class="news-date">15 April 2025 · Da Nang</div>
-            <h3 class="news-title">Da Nang International Fireworks Festival Returns This Summer</h3>
-            <p class="news-excerpt">The city's most iconic event is back — six nights of world-class fireworks over the
-              Han River. Book your stay now to secure a room during peak nights, before they're gone.</p>
+            <h3 class="news-title">Da Nang Fireworks Festival Returns This Summer</h3>
+            <p class="news-excerpt">Six nights of world-class fireworks over the Han River. Book early — rooms sell out
+              fast during festival week.</p>
           </div>
         </div>
-
-        <!-- Small card 1 -->
         <div class="news-card">
           <img class="news-card-img" src="https://picsum.photos/seed/sunriseyoga/600/400" alt="Yoga">
-          <div class="news-card-body">
-            <span class="news-tag">Weekly</span>
+          <div class="news-card-body"><span class="news-tag">Weekly</span>
             <div class="news-date">Every Tuesday, 7am</div>
             <h3 class="news-title">Sunrise Beach Yoga</h3>
-            <p class="news-excerpt">Free for all Shore guests. Mat, ocean breeze, and the sunrise. Hosted by our
-              in-house instructor.</p>
+            <p class="news-excerpt">Free for Shore guests. Mat, ocean breeze, and the sunrise. Hosted by our in-house
+              instructor.</p>
           </div>
         </div>
-
-        <!-- Small card 2 -->
         <div class="news-card">
           <img class="news-card-img" src="https://picsum.photos/seed/newmenulaunch/600/400" alt="Menu">
-          <div class="news-card-body">
-            <span class="news-tag">Property News</span>
+          <div class="news-card-body"><span class="news-tag">Property News</span>
             <div class="news-date">From 1 March 2025</div>
             <h3 class="news-title">New Breakfast Menu — Local Flavours</h3>
-            <p class="news-excerpt">We've partnered with a local chef to bring seasonal Vietnamese breakfast to all
-              guests every morning.</p>
+            <p class="news-excerpt">Seasonal Vietnamese breakfast for all guests each morning, in partnership with a
+              local chef.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
+  <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">THE <span>SHORE</span></span>
-        <p class="footer-tagline">A boutique ocean property in Da Nang. Book directly with us and skip the platform fees
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo-text">THE <span>SHORE</span></span>
+        <p class="footer-tagline">A boutique ocean property in Da Nang. Book directly and skip the platform fees
           entirely.</p>
-        <div class="footer-social">
-          <a class="social-btn" href="#" title="Instagram">✦</a>
-          <a class="social-btn" href="#" title="Facebook">f</a>
-          <a class="social-btn" href="#" title="TikTok">▶</a>
-        </div>
+        <div class="social-row"><a class="social-btn" href="#">✦</a><a class="social-btn" href="#">f</a><a
+            class="social-btn" href="#">▶</a></div>
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
         <ul>
           <li><a href="#rooms">Our Rooms</a></li>
           <li><a href="details.html#location">Location</a></li>
-          <li><a href="#news">Events</a></li>
+          <li><a href="#events">Events</a></li>
           <li><a href="details.html">Virtual Tour</a></li>
         </ul>
       </div>
@@ -1288,161 +1494,162 @@
         <ul>
           <li><a href="#">📍 150m My Khe Beach</a></li>
           <li><a href="#">📞 +84 000 000 000</a></li>
-          <li><a href="#">✉ hello@theshore.vn</a></li>
+          <li><a href="#">✉ <span class="__cf_email__"
+                data-cfemail="c6aea3aaaaa986b2aea3b5aea9b4a3e8b0a8">[email&#160;protected]</span></a></li>
           <li><a href="#">💬 WhatsApp</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 The Shore. All rights reserved.</span>
-      <span>Direct bookings only — no platform fees.</span>
-    </div>
+    <div class="footer-bottom"><span>© 2025 The Shore. All rights reserved.</span><span>Direct bookings only — no
+        platform fees.</span></div>
   </footer>
 
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
-    // ── Three.js Ocean Hero ──
+    // ═══ THEME ═══
+    const THEME_KEY = 'shore-theme';
+    let currentTheme = localStorage.getItem(THEME_KEY) || 'light';
+
+    function applyTheme(t) {
+      currentTheme = t;
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem(THEME_KEY, t);
+      const icon = document.getElementById('theme-icon');
+      if (icon) icon.textContent = t === 'dark' ? '🌙' : '☀️';
+      document.getElementById('wave-path').style.fill = t === 'dark' ? '#030D1B' : '#F5EFE3';
+      if (window._threeUpdate) window._threeUpdate(t);
+    }
+    function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+    applyTheme(currentTheme);
+
+    // ═══ NAV ═══
+    window.addEventListener('scroll', () => document.getElementById('main-nav').classList.toggle('scrolled', scrollY > 60));
+
+    // ═══ MOBILE MENU ═══
+    function toggleMenu() {
+      const m = document.getElementById('mobile-menu');
+      const h = document.getElementById('hamburger');
+      const open = m.classList.toggle('open');
+      h.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    // ═══ FILTER ═══
+    function filterRooms(type, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.room-card').forEach(c => {
+        c.style.display = (type === 'all' || (c.dataset.type || '').includes(type)) ? 'block' : 'none';
+      });
+    }
+
+    // ═══ 3D TILT ═══
+    document.querySelectorAll('.room-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5;
+        const y = (e.clientY - r.top) / r.height - .5;
+        card.style.transform = `perspective(900px) rotateY(${x * 9}deg) rotateX(${-y * 9}deg) translateY(-5px) scale(1.01)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform .5s ease,box-shadow .5s ease';
+        card.style.transform = '';
+        setTimeout(() => card.style.transition = '', 500);
+      });
+      card.addEventListener('mouseenter', () => card.style.transition = 'none');
+    });
+
+    // ═══ SCROLL REVEAL ═══
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }), { threshold: .1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+    // ═══ DEFAULT DATES ═══
+    const fmt = d => d.toISOString().split('T')[0];
+    const td = new Date();
+    const ci0 = new Date(td); ci0.setDate(td.getDate() + 1);
+    const co0 = new Date(td); co0.setDate(td.getDate() + 3);
+    document.getElementById('hero-ci').value = fmt(ci0);
+    document.getElementById('hero-co').value = fmt(co0);
+
+    // ═══ THREE.JS ═══
     (function () {
       const canvas = document.getElementById('hero-canvas');
       const hero = document.querySelector('.hero');
-      const W = window.innerWidth, H = hero.offsetHeight;
+      let W = window.innerWidth, H = hero.offsetHeight;
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
-      camera.position.set(0, 12, 28);
-      camera.lookAt(0, 0, 0);
+      const camera = new THREE.PerspectiveCamera(60, W / H, .1, 200);
+      camera.position.set(0, 12, 28); camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setSize(W, H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // Ambient + directional light
-      scene.add(new THREE.AmbientLight(0x001a66, 1.5));
-      const dl = new THREE.DirectionalLight(0x00aaff, 2.5);
-      dl.position.set(5, 10, 8);
-      scene.add(dl);
-      const dl2 = new THREE.DirectionalLight(0x0033aa, 1.5);
-      dl2.position.set(-8, 5, -5);
-      scene.add(dl2);
+      const amb = new THREE.AmbientLight(0xfff5e0, 1.8);
+      const dl = new THREE.DirectionalLight(0xffcc66, 2.5);
+      const dl2 = new THREE.DirectionalLight(0xffe0a0, 1.2);
+      dl.position.set(5, 12, 8); dl2.position.set(-8, 5, -5);
+      scene.add(amb, dl, dl2);
 
-      // Ocean wave plane (wireframe)
       const wGeo = new THREE.PlaneGeometry(100, 80, 80, 60);
-      const wMat = new THREE.MeshPhongMaterial({
-        color: 0x003366, wireframe: true, transparent: true, opacity: 0.22
-      });
-      const waveMesh = new THREE.Mesh(wGeo, wMat);
-      waveMesh.rotation.x = -Math.PI / 2.4;
-      waveMesh.position.y = -8;
-      scene.add(waveMesh);
+      const wMat = new THREE.MeshPhongMaterial({ color: 0xC8A060, wireframe: true, transparent: true, opacity: .20 });
+      const wMesh = new THREE.Mesh(wGeo, wMat);
+      wMesh.rotation.x = -Math.PI / 2.4; wMesh.position.y = -8;
+      scene.add(wMesh);
 
-      // Ocean wave plane (solid, darker)
       const wGeo2 = new THREE.PlaneGeometry(100, 80, 40, 30);
-      const wMat2 = new THREE.MeshPhongMaterial({
-        color: 0x001133, transparent: true, opacity: 0.55
-      });
-      const waveMesh2 = new THREE.Mesh(wGeo2, wMat2);
-      waveMesh2.rotation.x = -Math.PI / 2.4;
-      waveMesh2.position.y = -8.1;
-      scene.add(waveMesh2);
+      const wMat2 = new THREE.MeshPhongMaterial({ color: 0xF0DDB0, transparent: true, opacity: .42 });
+      const wMesh2 = new THREE.Mesh(wGeo2, wMat2);
+      wMesh2.rotation.x = -Math.PI / 2.4; wMesh2.position.y = -8.1;
+      scene.add(wMesh2);
 
-      // Glowing particles
-      const pCount = 1800;
+      const pCount = 1600;
       const pPos = new Float32Array(pCount * 3);
-      for (let i = 0; i < pCount; i++) {
-        pPos[i * 3] = (Math.random() - 0.5) * 120;
-        pPos[i * 3 + 1] = (Math.random() - 0.5) * 60;
-        pPos[i * 3 + 2] = (Math.random() - 0.5) * 60;
-      }
+      for (let i = 0; i < pCount; i++) { pPos[i * 3] = (Math.random() - .5) * 120; pPos[i * 3 + 1] = (Math.random() - .5) * 60; pPos[i * 3 + 2] = (Math.random() - .5) * 60; }
       const pGeo = new THREE.BufferGeometry();
       pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-      const pMat = new THREE.PointsMaterial({ color: 0x00D4FF, size: 0.18, transparent: true, opacity: 0.55 });
-      const particles = new THREE.Points(pGeo, pMat);
-      scene.add(particles);
+      const pMat = new THREE.PointsMaterial({ color: 0xC47A20, size: .18, transparent: true, opacity: .50 });
+      const pts = new THREE.Points(pGeo, pMat);
+      scene.add(pts);
 
-      // Animate
+      window._threeUpdate = function (t) {
+        if (t === 'dark') {
+          wMat.color.setHex(0x003366); wMat.opacity = .22;
+          wMat2.color.setHex(0x001133); wMat2.opacity = .55;
+          pMat.color.setHex(0x00D4FF); pMat.opacity = .55;
+          amb.color.setHex(0x001a66); amb.intensity = 1.5;
+          dl.color.setHex(0x00aaff); dl2.color.setHex(0x0033aa);
+        } else {
+          wMat.color.setHex(0xC8A060); wMat.opacity = .20;
+          wMat2.color.setHex(0xF0DDB0); wMat2.opacity = .42;
+          pMat.color.setHex(0xC47A20); pMat.opacity = .50;
+          amb.color.setHex(0xfff5e0); amb.intensity = 1.8;
+          dl.color.setHex(0xffcc66); dl2.color.setHex(0xffe0a0);
+        }
+      };
+      window._threeUpdate(currentTheme);
+
       const clock = new THREE.Clock();
       function animate() {
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
-
-        // Animate wave plane vertices
-        const pos1 = wGeo.attributes.position;
-        const pos2 = wGeo2.attributes.position;
-        for (let i = 0; i < pos1.count; i++) {
-          const x = pos1.getX(i), y = pos1.getY(i);
-          const z = Math.sin(x * 0.12 + t * 0.9) * 1.8 + Math.cos(y * 0.18 + t * 0.7) * 1.2;
-          pos1.setZ(i, z);
-        }
-        pos1.needsUpdate = true;
-        for (let i = 0; i < pos2.count; i++) {
-          const x = pos2.getX(i), y = pos2.getY(i);
-          const z = Math.sin(x * 0.12 + t * 0.9 + 0.3) * 1.8 + Math.cos(y * 0.18 + t * 0.7 + 0.3) * 1.2;
-          pos2.setZ(i, z);
-        }
-        pos2.needsUpdate = true;
-
-        particles.rotation.y = t * 0.025;
-        particles.rotation.x = Math.sin(t * 0.05) * 0.05;
-
+        const p1 = wGeo.attributes.position;
+        const p2 = wGeo2.attributes.position;
+        for (let i = 0; i < p1.count; i++) { const x = p1.getX(i), y = p1.getY(i); p1.setZ(i, Math.sin(x * .12 + t * .9) * 1.8 + Math.cos(y * .18 + t * .7) * 1.2); }
+        p1.needsUpdate = true;
+        for (let i = 0; i < p2.count; i++) { const x = p2.getX(i), y = p2.getY(i); p2.setZ(i, Math.sin(x * .12 + t * .9 + .3) * 1.8 + Math.cos(y * .18 + t * .7 + .3) * 1.2); }
+        p2.needsUpdate = true;
+        pts.rotation.y = t * .025;
         renderer.render(scene, camera);
       }
       animate();
 
-      // Resize
       window.addEventListener('resize', () => {
-        const W2 = window.innerWidth, H2 = hero.offsetHeight;
-        camera.aspect = W2 / H2;
-        camera.updateProjectionMatrix();
-        renderer.setSize(W2, H2);
+        W = window.innerWidth; H = hero.offsetHeight;
+        camera.aspect = W / H; camera.updateProjectionMatrix();
+        renderer.setSize(W, H);
       });
     })();
-
-    // ── Sticky Nav on scroll ──
-    const nav = document.getElementById('main-nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    });
-
-    // ── 3D card tilt ──
-    document.querySelectorAll('.room-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-6px) scale(1.01)`;
-        card.style.boxShadow = `${-x * 22}px ${-y * 22}px 50px rgba(0,180,255,0.12)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(900px) rotateY(0) rotateX(0) translateY(0) scale(1)';
-        card.style.boxShadow = '';
-        card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
-        setTimeout(() => { card.style.transition = ''; }, 500);
-      });
-      card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
-    });
-
-    // ── Filter ──
-    function filterRooms(type, btn) {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.room-card').forEach(card => {
-        const t = card.dataset.type || '';
-        card.style.display = (type === 'all' || t.includes(type)) ? 'block' : 'none';
-      });
-    }
-
-    // ── Scroll reveal ──
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // ── Default dates ──
-    const fmt = d => d.toISOString().split('T')[0];
-    const t = new Date();
-    const ci = new Date(t); ci.setDate(t.getDate() + 1);
-    const co = new Date(t); co.setDate(t.getDate() + 3);
-    document.getElementById('hero-ci').value = fmt(ci);
-    document.getElementById('hero-co').value = fmt(co);
   </script>
 </body>
 
