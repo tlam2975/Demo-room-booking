@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Complete Booking — The Shore</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Pixelify+Sans:wght@523&family=Playwrite+DK+Uloopet+Guides&display=swap"
     rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&family=Playwrite+DK+Uloopet+Guides:wght@400&display=swap"
+    rel="stylesheet">
+  <!-- <link href -->
   <style>
     *,
     *::before,
@@ -246,6 +251,44 @@
       height: 1px;
       background: var(--border);
       margin: 0 .65rem
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: .25rem .25rem;
+      gap: .1rem;
+      transition: border-color .25s, background .35s
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--border-h)
+    }
+
+    .lang-opt {
+      background: none;
+      border: none;
+      padding: .22rem .62rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .lang-opt.active {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .lang-opt:hover:not(.active) {
+      color: var(--text)
     }
 
     /* LAYOUT */
@@ -1003,6 +1046,30 @@
       color: var(--accent)
     }
 
+    /* ── VIETNAMESE FONT OVERRIDE ── */
+    [data-lang="vi"] .nav-logo,
+    [data-lang="vi"] .form-title,
+    [data-lang="vi"] .order-heading,
+    [data-lang="vi"] .order-room,
+    [data-lang="vi"] .success-title,
+    [data-lang="vi"] .footer-logo {
+      font-family: "Montserrat", cursive;
+      font-weight: 400;
+    }
+
+    [data-lang="vi"] .nav-logo {
+      font-size: 1.2rem;
+    }
+
+    [data-lang="vi"] .form-title {
+      letter-spacing: 0.01em;
+    }
+
+    [data-lang="vi"] .success-title {
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+    }
+
     /* RESPONSIVE */
     @media(max-width:800px) {
       .page {
@@ -1078,10 +1145,14 @@
         <line x1="19" y1="12" x2="5" y2="12" />
         <polyline points="12 19 5 12 12 5" />
       </svg>
-      Back to Room
+      <span data-i18n="back-room">Back to Room</span>
     </a>
     <div class="nav-right">
-      <div class="secure"><span class="secure-icon">🔒</span> Secure Checkout</div>
+      <div class="secure"><span class="secure-icon">🔒</span> <span data-i18n="secure">Secure Checkout</span></div>
+      <div class="lang-toggle">
+        <button class="lang-opt active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-opt" id="btn-vi" onclick="setLang('vi')">VI</button>
+      </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
         <span id="theme-icon">☀️</span>
         <span class="toggle-knob">→</span>
@@ -1092,15 +1163,15 @@
   <div class="progress-wrap">
     <div class="steps">
       <div class="step done">
-        <div class="step-num">✓</div><span>Choose Room</span>
+        <div class="step-num">✓</div><span data-i18n="step1">Choose Room</span>
       </div>
       <div class="step-line"></div>
       <div class="step active">
-        <div class="step-num">2</div><span>Your Details</span>
+        <div class="step-num">2</div><span data-i18n="step2">Your Details</span>
       </div>
       <div class="step-line"></div>
       <div class="step">
-        <div class="step-num">3</div><span>Confirm</span>
+        <div class="step-num">3</div><span data-i18n="step3">Confirm</span>
       </div>
     </div>
   </div>
@@ -1110,22 +1181,24 @@
     <div>
       <!-- 1. Guest Info -->
       <div class="form-block">
-        <div class="form-title"><span class="fnum">1</span> Guest Information</div>
+        <div class="form-title"><span class="fnum">1</span> <span data-i18n="f1-title">Guest Information</span></div>
         <div class="form-row">
-          <div class="field"><label>First Name</label><input type="text" id="fname" placeholder="Your first name"></div>
-          <div class="field"><label>Last Name</label><input type="text" id="lname" placeholder="Your last name"></div>
+          <div class="field"><label data-i18n="fname">First Name</label><input type="text" id="fname"
+              placeholder="Your first name"></div>
+          <div class="field"><label data-i18n="lname">Last Name</label><input type="text" id="lname"
+              placeholder="Your last name"></div>
         </div>
         <div class="form-row">
-          <div class="field"><label>Email Address</label><input type="email" id="email" placeholder="you@email.com">
-          </div>
-          <div class="field"><label>Phone / WhatsApp</label><input type="tel" id="phone" placeholder="+84 000 000 000">
-          </div>
+          <div class="field"><label data-i18n="email">Email Address</label><input type="email" id="email"
+              placeholder="you@email.com"></div>
+          <div class="field"><label data-i18n="phone">Phone / WhatsApp</label><input type="tel" id="phone"
+              placeholder="+84 000 000 000"></div>
         </div>
         <div class="form-row single">
           <div class="field">
-            <label>Nationality</label>
+            <label data-i18n="nationality">Nationality</label>
             <select id="nat">
-              <option value="">Select country…</option>
+              <option value="" data-i18n="select-country">Select country…</option>
               <option>🇻🇳 Vietnam</option>
               <option>🇺🇸 United States</option>
               <option>🇬🇧 United Kingdom</option>
@@ -1143,42 +1216,46 @@
 
       <!-- 2. Stay Details -->
       <div class="form-block">
-        <div class="form-title"><span class="fnum">2</span> Stay Details</div>
+        <div class="form-title"><span class="fnum">2</span> <span data-i18n="f2-title">Stay Details</span></div>
         <div class="form-row">
-          <div class="field"><label>Check In</label><input type="date" id="pci" onchange="recalc()"></div>
-          <div class="field"><label>Check Out</label><input type="date" id="pco" onchange="recalc()"></div>
+          <div class="field"><label data-i18n="checkin">Check In</label><input type="date" id="pci" onchange="recalc()">
+          </div>
+          <div class="field"><label data-i18n="checkout">Check Out</label><input type="date" id="pco"
+              onchange="recalc()"></div>
         </div>
         <div class="form-row">
-          <div class="field"><label>Guests</label><select id="guests">
-              <option>1 Guest</option>
-              <option selected>2 Guests</option>
+          <div class="field"><label data-i18n="guests">Guests</label><select id="guests">
+              <option data-i18n="guest1">1 Guest</option>
+              <option selected data-i18n="guest2">2 Guests</option>
             </select></div>
           <div class="field">
-            <label>Estimated Arrival</label>
+            <label data-i18n="arrival">Estimated Arrival</label>
             <select>
               <option>12:00 – 14:00</option>
               <option>14:00 – 16:00</option>
               <option>16:00 – 18:00</option>
               <option>18:00 – 20:00</option>
               <option>20:00 – 22:00</option>
-              <option>Late arrival (22:00+)</option>
+              <option data-i18n="late-arrival">Late arrival (22:00+)</option>
             </select>
           </div>
         </div>
         <div class="form-row single">
-          <div class="field"><label>Special Requests</label><textarea id="notes"
+          <div class="field"><label data-i18n="special-req">Special Requests</label><textarea id="notes"
               placeholder="Early check-in, dietary requirements, celebrations…"></textarea></div>
         </div>
       </div>
 
       <!-- 3. Payment -->
       <div class="form-block">
-        <div class="form-title"><span class="fnum">3</span> Payment Method</div>
+        <div class="form-title"><span class="fnum">3</span> <span data-i18n="f3-title">Payment Method</span></div>
         <div class="pay-tabs">
-          <button class="pay-tab active" onclick="setTab('apple',this)"><span class="tab-icon"> </span>Apple
-            Pay</button>
-          <button class="pay-tab" onclick="setTab('qr',this)"><span class="tab-icon">⬛</span>Bank QR</button>
-          <button class="pay-tab" onclick="setTab('momo',this)"><span class="tab-icon">💜</span>MoMo</button>
+          <button class="pay-tab active" onclick="setTab('apple',this)"><span class="tab-icon"> </span><span
+              data-i18n="pay-apple">Apple Pay</span></button>
+          <button class="pay-tab" onclick="setTab('qr',this)"><span class="tab-icon">⬛</span><span
+              data-i18n="pay-qr">Bank QR</span></button>
+          <button class="pay-tab" onclick="setTab('momo',this)"><span class="tab-icon">💜</span><span
+              data-i18n="pay-momo">MoMo</span></button>
         </div>
 
         <!-- Apple Pay -->
@@ -1237,12 +1314,12 @@
           stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12" />
         </svg>
-        Confirm &amp; Complete Booking
+        <span data-i18n="confirm-btn">Confirm &amp; Complete Booking</span>
       </button>
       <div class="trust-row">
-        <span>🔒 Secure</span>
-        <span>✓ No hidden fees</span>
-        <span>↩ Free cancellation 48h</span>
+        <span>🔒 <span data-i18n="trust1">Secure</span></span>
+        <span>✓ <span data-i18n="trust2">No hidden fees</span></span>
+        <span>↩ <span data-i18n="trust3">Free cancellation 48h</span></span>
       </div>
     </div>
 
@@ -1251,25 +1328,30 @@
       <div class="order-card">
         <div class="order-glow"></div>
         <div class="order-inner">
-          <div class="order-heading">Order Summary</div>
+          <div class="order-heading" data-i18n="order-heading">Order Summary</div>
           <img class="order-img" src="https://picsum.photos/seed/oceandeluxe1/700/300" alt="Room">
           <div class="order-room" id="sum-room">Seafront Deluxe</div>
-          <div class="order-sub">🌊 Sea View · King Bed · 2nd Floor</div>
+          <div class="order-sub" data-i18n="order-sub">🌊 Sea View · King Bed · 2nd Floor</div>
           <div class="order-dates">
-            <div class="odr"><span class="ok">Check In</span><span class="ov" id="sum-ci">—</span></div>
-            <div class="odr"><span class="ok">Check Out</span><span class="ov" id="sum-co">—</span></div>
-            <div class="odr"><span class="ok">Duration</span><span class="ov" id="sum-nights">2 nights</span></div>
+            <div class="odr"><span class="ok" data-i18n="checkin">Check In</span><span class="ov" id="sum-ci">—</span>
+            </div>
+            <div class="odr"><span class="ok" data-i18n="checkout">Check Out</span><span class="ov" id="sum-co">—</span>
+            </div>
+            <div class="odr"><span class="ok" data-i18n="duration">Duration</span><span class="ov" id="sum-nights">2
+                nights</span></div>
           </div>
-          <div class="prow"><span>$180 × <span id="sum-n">2</span> nights</span><span id="sum-sub">$360</span></div>
-          <div class="prow"><span>Taxes &amp; fees (10%)</span><span id="sum-tax">$36</span></div>
-          <div class="prow bold"><span>Total</span><span class="pamount" id="sum-total">$396</span></div>
+          <div class="prow"><span>$180 × <span id="sum-n">2</span> <span data-i18n="nights">nights</span></span><span
+              id="sum-sub">$360</span></div>
+          <div class="prow"><span data-i18n="taxes">Taxes &amp; fees (10%)</span><span id="sum-tax">$36</span></div>
+          <div class="prow bold"><span data-i18n="total">Total</span><span class="pamount" id="sum-total">$396</span>
+          </div>
           <div class="order-incl">
-            <div class="incl-title">Included</div>
+            <div class="incl-title" data-i18n="incl-title">Included</div>
             <ul class="incl-list">
-              <li>Daily breakfast for 2</li>
-              <li>Free WiFi throughout</li>
-              <li>Free cancellation 48h prior</li>
-              <li>WhatsApp host support</li>
+              <li data-i18n="incl1">Daily breakfast for 2</li>
+              <li data-i18n="incl2">Free WiFi throughout</li>
+              <li data-i18n="incl3">Free cancellation 48h prior</li>
+              <li data-i18n="incl4">WhatsApp host support</li>
             </ul>
           </div>
         </div>
@@ -1281,14 +1363,15 @@
   <div class="overlay" id="overlay">
     <div class="success-box">
       <div class="success-ring">✓</div>
-      <h2 class="success-title">Booking Confirmed!</h2>
-      <p class="success-sub">Thank you for booking directly with The Shore. We'll reach out on WhatsApp within 2 hours
-        to confirm your stay.</p>
+      <h2 class="success-title" data-i18n="success-title">Booking Confirmed!</h2>
+      <p class="success-sub" data-i18n="success-sub">Thank you for booking directly with The Shore. We'll reach out on
+        WhatsApp within 2 hours to confirm your stay.</p>
       <div class="success-detail" id="success-detail"></div>
-      <p class="ref-note">Reference: <span class="ref-code" id="ref-code">SHORE-000000</span></p>
+      <p class="ref-note"><span data-i18n="ref-label">Reference:</span> <span class="ref-code"
+          id="ref-code">SHORE-000000</span></p>
       <div class="success-btns">
-        <button class="btn-done" onclick="closeOverlay()">Done</button>
-        <a class="btn-home" href="index.html">Back to Home</a>
+        <button class="btn-done" onclick="closeOverlay()" data-i18n="btn-done">Done</button>
+        <a class="btn-home" href="index.html" data-i18n="btn-home">Back to Home</a>
       </div>
     </div>
   </div>
@@ -1296,7 +1379,7 @@
   <footer>
     <div class="footer-inner">
       <span class="footer-logo">THE <span>SHORE</span></span>
-      <span>Direct bookings only — no platform fees.</span>
+      <span data-i18n="footer-direct">Direct bookings only — no platform fees.</span>
       <span>📍 Da Nang · +84 000 000 000</span>
     </div>
   </footer>
@@ -1313,6 +1396,70 @@
     }
     function toggleTheme() { applyTheme(cur === 'dark' ? 'light' : 'dark'); }
     applyTheme(cur);
+
+    // ═══ LANGUAGE ═══
+    const LANG_KEY = 'shore-lang';
+    let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+    const T = {
+      en: {
+        'back-room': 'Back to Room', 'secure': 'Secure Checkout',
+        'step1': 'Choose Room', 'step2': 'Your Details', 'step3': 'Confirm',
+        'f1-title': 'Guest Information', 'f2-title': 'Stay Details', 'f3-title': 'Payment Method',
+        'fname': 'First Name', 'lname': 'Last Name', 'email': 'Email Address', 'phone': 'Phone / WhatsApp',
+        'nationality': 'Nationality', 'select-country': 'Select country…',
+        'checkin': 'Check In', 'checkout': 'Check Out', 'guests': 'Guests',
+        'guest1': '1 Guest', 'guest2': '2 Guests',
+        'arrival': 'Estimated Arrival', 'late-arrival': 'Late arrival (22:00+)',
+        'special-req': 'Special Requests',
+        'pay-apple': 'Apple Pay', 'pay-qr': 'Bank QR', 'pay-momo': 'MoMo',
+        'confirm-btn': 'Confirm & Complete Booking',
+        'trust1': 'Secure', 'trust2': 'No hidden fees', 'trust3': 'Free cancellation 48h',
+        'order-heading': 'Order Summary', 'order-sub': '🌊 Sea View · King Bed · 2nd Floor',
+        'duration': 'Duration', 'nights': 'nights', 'taxes': 'Taxes & fees (10%)', 'total': 'Total',
+        'incl-title': 'Included',
+        'incl1': 'Daily breakfast for 2', 'incl2': 'Free WiFi throughout',
+        'incl3': 'Free cancellation 48h prior', 'incl4': 'WhatsApp host support',
+        'success-title': 'Booking Confirmed!',
+        'success-sub': "Thank you for booking directly with The Shore. We'll reach out on WhatsApp within 2 hours to confirm your stay.",
+        'ref-label': 'Reference:', 'btn-done': 'Done', 'btn-home': 'Back to Home',
+        'footer-direct': 'Direct bookings only — no platform fees.',
+      },
+      vi: {
+        'back-room': 'Quay lại phòng', 'secure': 'Thanh toán bảo mật',
+        'step1': 'Chọn phòng', 'step2': 'Thông tin của bạn', 'step3': 'Xác nhận',
+        'f1-title': 'Thông tin khách', 'f2-title': 'Chi tiết lưu trú', 'f3-title': 'Phương thức thanh toán',
+        'fname': 'Tên', 'lname': 'Họ', 'email': 'Địa chỉ email', 'phone': 'Điện thoại / WhatsApp',
+        'nationality': 'Quốc tịch', 'select-country': 'Chọn quốc gia…',
+        'checkin': 'Ngày đến', 'checkout': 'Ngày đi', 'guests': 'Số khách',
+        'guest1': '1 Khách', 'guest2': '2 Khách',
+        'arrival': 'Dự kiến giờ đến', 'late-arrival': 'Đến muộn (sau 22:00)',
+        'special-req': 'Yêu cầu đặc biệt',
+        'pay-apple': 'Apple Pay', 'pay-qr': 'QR Ngân hàng', 'pay-momo': 'MoMo',
+        'confirm-btn': 'Xác nhận & Hoàn tất đặt phòng',
+        'trust1': 'Bảo mật', 'trust2': 'Không phí ẩn', 'trust3': 'Hủy miễn phí 48h',
+        'order-heading': 'Tóm tắt đơn hàng', 'order-sub': '🌊 Hướng biển · Giường King · Tầng 2',
+        'duration': 'Thời gian', 'nights': 'đêm', 'taxes': 'Thuế & phí (10%)', 'total': 'Tổng cộng',
+        'incl-title': 'Bao gồm',
+        'incl1': 'Bữa sáng hàng ngày cho 2 người', 'incl2': 'WiFi miễn phí',
+        'incl3': 'Hủy miễn phí trước 48h', 'incl4': 'Hỗ trợ qua WhatsApp',
+        'success-title': 'Đặt phòng thành công!',
+        'success-sub': 'Cảm ơn bạn đã đặt trực tiếp tại The Shore. Chúng tôi sẽ liên hệ qua WhatsApp trong vòng 2 giờ để xác nhận.',
+        'ref-label': 'Mã đặt phòng:', 'btn-done': 'Xong', 'btn-home': 'Về trang chủ',
+        'footer-direct': 'Chỉ đặt trực tiếp — không phí nền tảng.',
+      }
+    };
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.setAttribute('data-lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+      });
+      ['btn-en'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('active', lang === 'en'); });
+      ['btn-vi'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('active', lang === 'vi'); });
+    }
+    setLang(currentLang);
 
     // URL params
     const params = new URLSearchParams(location.search);

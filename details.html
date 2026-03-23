@@ -6,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seafront Deluxe — The Shore</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Pixelify+Sans:wght@523&family=Playwrite+DK+Uloopet+Guides&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&family=Playwrite+DK+Uloopet+Guides:wght@400&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
@@ -273,6 +277,44 @@
       font-size: 1rem !important;
       font-family: 'Outfit', sans-serif !important;
       font-weight: 700
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: .25rem .25rem;
+      gap: .1rem;
+      transition: border-color .25s, background .35s
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--border-h)
+    }
+
+    .lang-opt {
+      background: none;
+      border: none;
+      padding: .22rem .62rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .lang-opt.active {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .lang-opt:hover:not(.active) {
+      color: var(--text)
     }
 
     /* BREADCRUMB */
@@ -926,6 +968,30 @@
       }
     }
 
+    /* ── VIETNAMESE FONT OVERRIDE ── */
+    [data-lang="vi"] .nav-logo,
+    [data-lang="vi"] .room-title,
+    [data-lang="vi"] .block-label,
+    [data-lang="vi"] .similar-name,
+    [data-lang="vi"] .footer-logo {
+      font-family: "Montserrat", cursive;
+      font-weight: 400;
+    }
+
+    [data-lang="vi"] .room-title {
+      letter-spacing: 0.01em;
+      line-height: 1.25;
+    }
+
+    [data-lang="vi"] .nav-logo {
+      font-size: 1.2rem;
+    }
+
+    [data-lang="vi"] .block-label {
+      font-size: .7rem;
+      letter-spacing: .08em;
+    }
+
     /* RESPONSIVE */
     @media(max-width:960px) {
       .detail-layout {
@@ -1009,14 +1075,18 @@
         <line x1="19" y1="12" x2="5" y2="12" />
         <polyline points="12 19 5 12 12 5" />
       </svg>
-      All Rooms
+      <span data-i18n="back">All Rooms</span>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html#rooms">Rooms</a></li>
-      <li><a href="#location">Location</a></li>
-      <li><a href="payment.html" class="nav-cta">Book Now</a></li>
+      <li><a href="index.html#rooms" data-i18n="nav-rooms">Rooms</a></li>
+      <li><a href="#location" data-i18n="nav-location">Location</a></li>
+      <li><a href="payment.html" class="nav-cta" data-i18n="nav-book">Book Now</a></li>
     </ul>
     <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-opt active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-opt" id="btn-vi" onclick="setLang('vi')">VI</button>
+      </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
         <span id="theme-icon">☀️</span>
         <span class="toggle-knob">→</span>
@@ -1026,15 +1096,19 @@
   </nav>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html#rooms" onclick="toggleMenu()">All Rooms</a>
-    <a href="#location" onclick="toggleMenu()">Location</a>
-    <a href="payment.html" class="mob-cta" onclick="toggleMenu()">Book Now</a>
+    <a href="index.html#rooms" onclick="toggleMenu()" data-i18n="back">All Rooms</a>
+    <a href="#location" onclick="toggleMenu()" data-i18n="nav-location">Location</a>
+    <a href="payment.html" class="mob-cta" onclick="toggleMenu()" data-i18n="nav-book">Book Now</a>
+    <div class="lang-toggle" style="margin-top:.5rem">
+      <button class="lang-opt active" id="mob-btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-opt" id="mob-btn-vi" onclick="setLang('vi')">VI</button>
+    </div>
   </div>
 
   <div class="breadcrumb">
-    <a href="index.html">Home</a><span>›</span>
-    <a href="index.html#rooms">Rooms</a><span>›</span>
-    <span class="bc-cur">Seafront Deluxe</span>
+    <a href="index.html" data-i18n="bc-home">Home</a><span>›</span>
+    <a href="index.html#rooms" data-i18n="nav-rooms">Rooms</a><span>›</span>
+    <span class="bc-cur" data-i18n="room-name">Seafront Deluxe</span>
   </div>
 
   <div class="page">
@@ -1043,10 +1117,11 @@
       <div class="gallery-main" id="gwrap">
         <img id="g-photo" src="https://picsum.photos/seed/oceandeluxe1/1400/600" alt="Room">
         <div id="g-panorama"></div>
-        <span class="room-floor">Room 201</span>
+        <span class="room-floor" data-i18n="room-floor">Room 201</span>
         <span class="photo-counter" id="pctr">1 / 4</span>
-        <div class="drag-hint" id="drag-hint">👆 Drag to explore</div>
-        <button class="btn-360" id="btn360" onclick="toggle360()"><span>⟳</span> 360° View</button>
+        <div class="drag-hint" id="drag-hint" data-i18n="drag-hint">👆 Drag to explore</div>
+        <button class="btn-360" id="btn360" onclick="toggle360()"><span>⟳</span> <span data-i18n="view360">360°
+            View</span></button>
       </div>
       <div class="gallery-thumbs">
         <div class="thumb active" onclick="setPhoto(0,this)"><img src="https://picsum.photos/seed/oceandeluxe1/400/200"
@@ -1064,49 +1139,51 @@
       <!-- LEFT -->
       <div>
         <div class="room-headline">
-          <h1 class="room-title">Seafront Deluxe</h1>
-          <div class="room-rating"><span class="star-gold">★</span> 4.9 <span style="opacity:.4;margin-left:3px">(42
-              reviews)</span></div>
+          <h1 class="room-title" data-i18n="room-name">Seafront Deluxe</h1>
+          <div class="room-rating"><span class="star-gold">★</span> 4.9 <span style="opacity:.4;margin-left:3px"
+              data-i18n="reviews">(42 reviews)</span></div>
         </div>
         <div class="room-stats">
-          <span class="stat-pill">🛏️ King Bed</span>
-          <span class="stat-pill">👤 2 Guests</span>
+          <span class="stat-pill" data-i18n="sp-bed">🛏️ King Bed</span>
+          <span class="stat-pill" data-i18n="sp-guests">👤 2 Guests</span>
           <span class="stat-pill">📐 36m²</span>
-          <span class="stat-pill">🌊 80m to Beach</span>
-          <span class="stat-pill">🏠 2nd Floor</span>
+          <span class="stat-pill" data-i18n="sp-beach">🌊 80m to Beach</span>
+          <span class="stat-pill" data-i18n="sp-floor">🏠 2nd Floor</span>
         </div>
 
         <div class="info-block">
-          <div class="block-label">About this room</div>
-          <p class="room-desc">Step inside the Seafront Deluxe and let the horizon do the talking. A wall of glass
-            frames the sea from the moment you wake — morning light rippling across the water, evenings bleeding gold
-            into the sky. The king bed faces the view deliberately; sleep and the sea become the same thing.<br><br>The
-            bathroom continues the quiet luxury: a rain shower, freestanding bathtub, and cool stone tiles underfoot.
-            Step out to your private balcony — just 80 metres from the waves. A breakfast basket arrives each morning
-            before you're ready to move.</p>
+          <div class="block-label" data-i18n="lbl-about">About this room</div>
+          <p class="room-desc" data-i18n="room-desc">Step inside the Seafront Deluxe and let the horizon do the talking.
+            A wall of glass frames the sea from the moment you wake — morning light rippling across the water, evenings
+            bleeding gold into the sky. The king bed faces the view deliberately; sleep and the sea become the same
+            thing.<br><br>The bathroom continues the quiet luxury: a rain shower, freestanding bathtub, and cool stone
+            tiles underfoot. Step out to your private balcony — just 80 metres from the waves. A breakfast basket
+            arrives each morning before you're ready to move.</p>
         </div>
 
         <div class="info-block">
-          <div class="block-label">What's included</div>
+          <div class="block-label" data-i18n="lbl-included">What's included</div>
           <div class="amenities-grid">
-            <div class="amenity"><span class="icon">❄️</span> Air Conditioning</div>
-            <div class="amenity"><span class="icon">📶</span> Free WiFi</div>
-            <div class="amenity"><span class="icon">🛁</span> Freestanding Bath</div>
-            <div class="amenity"><span class="icon">🚿</span> Rain Shower</div>
-            <div class="amenity"><span class="icon">📺</span> 55" Smart TV</div>
-            <div class="amenity"><span class="icon">🌅</span> Private Balcony</div>
-            <div class="amenity"><span class="icon">☕</span> Coffee Machine</div>
-            <div class="amenity"><span class="icon">🍳</span> Breakfast Included</div>
-            <div class="amenity"><span class="icon">🔒</span> Private Entrance</div>
+            <div class="amenity"><span class="icon">❄️</span> <span data-i18n="am-ac">Air Conditioning</span></div>
+            <div class="amenity"><span class="icon">📶</span> <span data-i18n="am-wifi">Free WiFi</span></div>
+            <div class="amenity"><span class="icon">🛁</span> <span data-i18n="am-bath">Freestanding Bath</span></div>
+            <div class="amenity"><span class="icon">🚿</span> <span data-i18n="am-shower">Rain Shower</span></div>
+            <div class="amenity"><span class="icon">📺</span> <span data-i18n="am-tv">55" Smart TV</span></div>
+            <div class="amenity"><span class="icon">🌅</span> <span data-i18n="am-balcony">Private Balcony</span></div>
+            <div class="amenity"><span class="icon">☕</span> <span data-i18n="am-coffee">Coffee Machine</span></div>
+            <div class="amenity"><span class="icon">🍳</span> <span data-i18n="am-breakfast">Breakfast Included</span>
+            </div>
+            <div class="amenity"><span class="icon">🔒</span> <span data-i18n="am-entrance">Private Entrance</span>
+            </div>
           </div>
         </div>
 
         <div class="divider"></div>
 
         <div class="info-block" id="location">
-          <div class="block-label">Location</div>
-          <p style="font-size:.87rem;color:var(--muted);margin-bottom:1.1rem">📍 80m from My Khe Beach · 5 min walk to
-            seafront · 20 min from Da Nang Airport</p>
+          <div class="block-label" data-i18n="nav-location">Location</div>
+          <p style="font-size:.87rem;color:var(--muted);margin-bottom:1.1rem" data-i18n="loc-desc">📍 80m from My Khe
+            Beach · 5 min walk to seafront · 20 min from Da Nang Airport</p>
           <div class="map-wrap">
             <iframe src="https://maps.google.com/maps?q=16.0544,108.2477&z=16&output=embed" allowfullscreen=""
               loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="The Shore location"></iframe>
@@ -1116,29 +1193,29 @@
               stroke-linecap="round" stroke-linejoin="round">
               <polygon points="3 11 22 2 13 21 11 13 3 11" />
             </svg>
-            Get Directions in Google Maps
+            <span data-i18n="get-directions">Get Directions in Google Maps</span>
           </a>
         </div>
 
         <div class="divider"></div>
 
         <div class="info-block">
-          <div class="block-label">Other Rooms</div>
+          <div class="block-label" data-i18n="lbl-other">Other Rooms</div>
           <div class="similar-grid">
             <a href="details.html" class="similar-card"><img class="similar-img"
                 src="https://picsum.photos/seed/gardenstudio99/200/300" alt="">
               <div class="similar-body">
-                <div class="similar-name">Garden Studio</div>
-                <div class="similar-price">$95 / night</div>
-                <div class="similar-sub">🌿 Garden · 150m to beach</div>
+                <div class="similar-name" data-i18n="sim1-name">Garden Studio</div>
+                <div class="similar-price" data-i18n="sim1-price">$95 / night</div>
+                <div class="similar-sub" data-i18n="sim1-sub">🌿 Garden · 150m to beach</div>
               </div>
             </a>
             <a href="details.html" class="similar-card"><img class="similar-img"
                 src="https://picsum.photos/seed/sunsetsuite88/200/300" alt="">
               <div class="similar-body">
-                <div class="similar-name">Sunset Suite</div>
-                <div class="similar-price">$260 / night</div>
-                <div class="similar-sub">✦ Premium · Sea view</div>
+                <div class="similar-name" data-i18n="sim2-name">Sunset Suite</div>
+                <div class="similar-price" data-i18n="sim2-price">$260 / night</div>
+                <div class="similar-sub" data-i18n="sim2-sub">✦ Premium · Sea view</div>
               </div>
             </a>
           </div>
@@ -1152,34 +1229,36 @@
           <div class="card-inner">
             <div class="price-row-top">
               <div class="price-big">$180</div>
-              <div class="price-unit">/ night</div>
-              <span class="price-incl">✓ Breakfast</span>
+              <div class="price-unit" data-i18n="per-night">/ night</div>
+              <span class="price-incl" data-i18n="incl-breakfast">✓ Breakfast</span>
             </div>
             <div class="dates-grid">
-              <div class="date-field"><span class="date-label">Check In</span><input class="date-input" type="date"
-                  id="ci" onchange="calc()"></div>
-              <div class="date-field"><span class="date-label">Check Out</span><input class="date-input" type="date"
-                  id="co" onchange="calc()"></div>
+              <div class="date-field"><span class="date-label" data-i18n="checkin">Check In</span><input
+                  class="date-input" type="date" id="ci" onchange="calc()"></div>
+              <div class="date-field"><span class="date-label" data-i18n="checkout">Check Out</span><input
+                  class="date-input" type="date" id="co" onchange="calc()"></div>
             </div>
             <div class="guests-row">
-              <span class="g-label">Guests</span>
+              <span class="g-label" data-i18n="guests">Guests</span>
               <select class="g-select">
-                <option>1 Guest</option>
-                <option selected>2 Guests</option>
+                <option data-i18n="guest1">1 Guest</option>
+                <option selected data-i18n="guest2">2 Guests</option>
               </select>
             </div>
             <div class="total-box">
-              <div class="total-row"><span>$180 × <span id="nn">2</span> nights</span><span id="sub">$360</span></div>
-              <div class="total-row"><span>Taxes &amp; fees (10%)</span><span id="tax">$36</span></div>
-              <div class="total-row bold"><span>Total</span><span id="tot">$396</span></div>
+              <div class="total-row"><span>$180 × <span id="nn">2</span> <span
+                    data-i18n="nights">nights</span></span><span id="sub">$360</span></div>
+              <div class="total-row"><span data-i18n="taxes">Taxes &amp; fees (10%)</span><span id="tax">$36</span>
+              </div>
+              <div class="total-row bold"><span data-i18n="total">Total</span><span id="tot">$396</span></div>
             </div>
-            <a class="book-cta" id="book-cta" href="payment.html">Reserve This Room →</a>
-            <p class="card-note">Complete your details on the next page.</p>
+            <a class="book-cta" id="book-cta" href="payment.html" data-i18n="reserve">Reserve This Room →</a>
+            <p class="card-note" data-i18n="card-note">Complete your details on the next page.</p>
             <ul class="perks">
-              <li>Free cancellation 48h before check-in</li>
-              <li>No hidden platform fees</li>
-              <li>Direct booking — pay the owner</li>
-              <li>WhatsApp confirmation within 2h</li>
+              <li data-i18n="perk1">Free cancellation 48h before check-in</li>
+              <li data-i18n="perk2">No hidden platform fees</li>
+              <li data-i18n="perk3">Direct booking — pay the owner</li>
+              <li data-i18n="perk4">WhatsApp confirmation within 2h</li>
             </ul>
           </div>
         </div>
@@ -1206,6 +1285,72 @@
     }
     function toggleTheme() { applyTheme(cur === 'dark' ? 'light' : 'dark'); }
     applyTheme(cur);
+
+    // ═══ LANGUAGE ═══
+    const LANG_KEY = 'shore-lang';
+    let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+    const T = {
+      en: {
+        'back': 'All Rooms', 'nav-rooms': 'Rooms', 'nav-location': 'Location', 'nav-book': 'Book Now',
+        'bc-home': 'Home', 'room-name': 'Seafront Deluxe', 'room-floor': 'Room 201',
+        'drag-hint': '👆 Drag to explore', 'view360': '360° View',
+        'reviews': '(42 reviews)',
+        'sp-bed': '🛏️ King Bed', 'sp-guests': '👤 2 Guests', 'sp-beach': '🌊 80m to Beach', 'sp-floor': '🏠 2nd Floor',
+        'lbl-about': 'About this room', 'lbl-included': "What's included", 'nav-location': 'Location', 'lbl-other': 'Other Rooms',
+        'room-desc': 'Step inside the Seafront Deluxe and let the horizon do the talking. A wall of glass frames the sea from the moment you wake — morning light rippling across the water, evenings bleeding gold into the sky. The king bed faces the view deliberately; sleep and the sea become the same thing.\n\nThe bathroom continues the quiet luxury: a rain shower, freestanding bathtub, and cool stone tiles underfoot. Step out to your private balcony — just 80 metres from the waves. A breakfast basket arrives each morning before you\'re ready to move.',
+        'am-ac': 'Air Conditioning', 'am-wifi': 'Free WiFi', 'am-bath': 'Freestanding Bath',
+        'am-shower': 'Rain Shower', 'am-tv': '55" Smart TV', 'am-balcony': 'Private Balcony',
+        'am-coffee': 'Coffee Machine', 'am-breakfast': 'Breakfast Included', 'am-entrance': 'Private Entrance',
+        'loc-desc': '📍 80m from My Khe Beach · 5 min walk to seafront · 20 min from Da Nang Airport',
+        'get-directions': 'Get Directions in Google Maps',
+        'sim1-name': 'Garden Studio', 'sim1-price': '$95 / night', 'sim1-sub': '🌿 Garden · 150m to beach',
+        'sim2-name': 'Sunset Suite', 'sim2-price': '$260 / night', 'sim2-sub': '✦ Premium · Sea view',
+        'per-night': '/ night', 'incl-breakfast': '✓ Breakfast',
+        'checkin': 'Check In', 'checkout': 'Check Out', 'guests': 'Guests',
+        'guest1': '1 Guest', 'guest2': '2 Guests',
+        'nights': 'nights', 'taxes': 'Taxes & fees (10%)', 'total': 'Total',
+        'reserve': 'Reserve This Room →', 'card-note': 'Complete your details on the next page.',
+        'perk1': 'Free cancellation 48h before check-in', 'perk2': 'No hidden platform fees',
+        'perk3': 'Direct booking — pay the owner', 'perk4': 'WhatsApp confirmation within 2h',
+      },
+      vi: {
+        'back': 'Tất cả phòng', 'nav-rooms': 'Phòng', 'nav-location': 'Vị trí', 'nav-book': 'Đặt ngay',
+        'bc-home': 'Trang chủ', 'room-name': 'Phòng Biển Deluxe', 'room-floor': 'Phòng 201',
+        'drag-hint': '👆 Kéo để khám phá', 'view360': 'Xem 360°',
+        'reviews': '(42 đánh giá)',
+        'sp-bed': '🛏️ Giường King', 'sp-guests': '👤 2 Khách', 'sp-beach': '🌊 Cách biển 80m', 'sp-floor': '🏠 Tầng 2',
+        'lbl-about': 'Về phòng này', 'lbl-included': 'Tiện nghi bao gồm', 'nav-location': 'Vị trí', 'lbl-other': 'Các phòng khác',
+        'room-desc': 'Bước vào Phòng Biển Deluxe và để chân trời lên tiếng. Bức tường kính khung lấy biển cả từ lúc bạn thức dậy — ánh sáng ban mai gợn sóng trên mặt nước, buổi tối nhuộm vàng bầu trời. Chiếc giường king hướng về tầm nhìn một cách có chủ đích; giấc ngủ và đại dương hòa làm một.\n\nPhòng tắm tiếp nối sự sang trọng yên bình: vòi sen mưa, bồn tắm độc lập và gạch đá mát lạnh dưới chân. Bước ra ban công riêng — chỉ cách sóng biển 80 mét. Giỏ bữa sáng sẽ được giao mỗi buổi sáng trước khi bạn sẵn sàng.',
+        'am-ac': 'Điều hòa không khí', 'am-wifi': 'WiFi miễn phí', 'am-bath': 'Bồn tắm độc lập',
+        'am-shower': 'Vòi sen mưa', 'am-tv': 'Smart TV 55"', 'am-balcony': 'Ban công riêng',
+        'am-coffee': 'Máy pha cà phê', 'am-breakfast': 'Bao gồm bữa sáng', 'am-entrance': 'Lối vào riêng',
+        'loc-desc': '📍 Cách bãi biển Mỹ Khê 80m · 5 phút đi bộ đến bờ biển · 20 phút từ sân bay Đà Nẵng',
+        'get-directions': 'Chỉ đường trên Google Maps',
+        'sim1-name': 'Studio Vườn', 'sim1-price': '$95 / đêm', 'sim1-sub': '🌿 Vườn · Cách biển 150m',
+        'sim2-name': 'Suite Hoàng Hôn', 'sim2-price': '$260 / đêm', 'sim2-sub': '✦ Cao cấp · Hướng biển',
+        'per-night': '/ đêm', 'incl-breakfast': '✓ Bữa sáng',
+        'checkin': 'Ngày đến', 'checkout': 'Ngày đi', 'guests': 'Khách',
+        'guest1': '1 Khách', 'guest2': '2 Khách',
+        'nights': 'đêm', 'taxes': 'Thuế & phí (10%)', 'total': 'Tổng cộng',
+        'reserve': 'Đặt phòng này →', 'card-note': 'Hoàn tất thông tin ở trang tiếp theo.',
+        'perk1': 'Hủy miễn phí trước 48h nhận phòng', 'perk2': 'Không phí ẩn nền tảng',
+        'perk3': 'Đặt trực tiếp — thanh toán cho chủ', 'perk4': 'Xác nhận qua WhatsApp trong 2h',
+      }
+    };
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.setAttribute('data-lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+      });
+      ['btn-en', 'mob-btn-en'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('active', lang === 'en'); });
+      ['btn-vi', 'mob-btn-vi'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('active', lang === 'vi'); });
+      // re-run toggle360 label sync
+      if (!is360) document.getElementById('btn360').innerHTML = '<span>⟳</span> <span data-i18n="view360">' + T[lang]['view360'] + '</span>';
+    }
+    setLang(currentLang);
 
     function toggleMenu() {
       const m = document.getElementById('mobile-menu'), h = document.getElementById('hamburger');
