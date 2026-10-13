@@ -5,7 +5,7 @@
 })(typeof window !== 'undefined' ? window : null, function () {
   return {
     site: {
-      name: 'Hai Tien Stays',
+      name: 'BT luxury',
       // Set the owner's tested personal Zalo contact URL before launch.
       zaloUrl: null
     },

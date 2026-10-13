@@ -1,4 +1,4 @@
-# Hai Tien Stays
+# BT luxury
 
 A room catalogue and enquiry site, initially for privately rented rooms at Flamingo Hải Tiến, Thanh Hóa. Guests send an enquiry and discuss the final price, availability and included services with the owner.
 
@@ -64,7 +64,7 @@ Set these variables in Vercel Project Settings → Environment Variables, or a l
 | `SMTP_PASS` | SMTP password or app password |
 | `SMTP_FROM` | Sender address accepted by the SMTP account |
 | `ENQUIRY_TO` | Owner's destination email address |
-| `WEATHER_API_KEY` | Private WeatherAPI.com key |
+| `OPENWEATHER_API_KEY` | Private OpenWeatherMap key with access to the 5-day / 3-hour forecast API |
 
 Keep real values in the server environment, outside Git and the browser catalogue. `.env.example` contains placeholders. Port 465 uses implicit TLS; other ports require STARTTLS. Without valid SMTP settings, the form receives an unavailable response. No live email can be verified until the sending account and recipient are configured.
 
@@ -72,7 +72,15 @@ The personal Zalo contact is separate from email delivery. Set `site.zaloUrl` to
 
 ## Weather API
 
-`GET /api/weather?roomId=sea-studio&lang=vi` requests three forecast days for the room's resolved location. English is used unless `lang=vi`. The response includes `days`, each with `date`, `condition`, `conditionCode`, `maxC`, `minC` and `rainChance`. Successful responses are cached for 30 minutes on Vercel. Missing configuration or provider failures produce an unavailable response rather than fabricated weather. This is the upcoming forecast, independent of the selected stay dates. [WeatherAPI documentation](https://www.weatherapi.com/docs/).
+Create `.env.local` in the repository root (alongside `package.json`) and add:
+
+```dotenv
+OPENWEATHER_API_KEY=your-openweathermap-key
+```
+
+Restart `npm run dev` after saving the key. For deployment, add `OPENWEATHER_API_KEY` in **Vercel → Project Settings → Environment Variables**, select the required environments, then redeploy. The key is used only by the server. `.env.local` is ignored by Git; never put the key in `catalog.js`, HTML, or browser JavaScript.
+
+`GET /api/weather?roomId=sea-studio&lang=vi` calls OpenWeather's 5-day / 3-hour forecast API for the room's resolved coordinates, with Celsius units and Vietnamese descriptions (`lang=vi`; otherwise English). It groups upcoming periods by the destination's UTC offset and returns the first three dates. The response includes `days`, each with `date`, `condition`, `conditionCode`, `maxC`, `minC` and `rainChance`. Temperatures are the range of available forecast samples, the description comes from the sample closest to local noon, and `rainChance` is the highest precipitation probability among that date's samples. Today's range covers only remaining forecast periods. These are summaries of three-hour forecasts, not full-day extrema or a calculated daily rain probability. Successful responses are cached for 30 minutes on Vercel. Missing configuration or provider failures produce an unavailable response. This forecast is independent of the selected stay dates. [OpenWeather documentation](https://openweathermap.org/api/forecast5).
 
 ## CMS path
 

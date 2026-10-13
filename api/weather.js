@@ -17,37 +17,48 @@ module.exports = async function handler(req, res) {
   const location = room.location || property;
   if (!validCoordinates(location)) return res.status(503).json({ error: 'Weather is unavailable' });
 
-  const key = process.env.WEATHER_API_KEY;
+  const key = process.env.OPENWEATHER_API_KEY;
   if (!key) return res.status(503).json({ error: 'Weather is unavailable' });
 
   const lang = req.query?.lang === 'vi' ? 'vi' : 'en';
-  const url = new URL('https://api.weatherapi.com/v1/forecast.json');
-  url.searchParams.set('key', key);
-  url.searchParams.set('q', `${location.latitude},${location.longitude}`);
-  url.searchParams.set('days', '3');
+  const url = new URL('https://api.openweathermap.org/data/2.5/forecast');
+  url.searchParams.set('appid', key);
+  url.searchParams.set('lat', String(location.latitude));
+  url.searchParams.set('lon', String(location.longitude));
+  url.searchParams.set('units', 'metric');
   url.searchParams.set('lang', lang);
-  url.searchParams.set('aqi', 'no');
-  url.searchParams.set('alerts', 'no');
 
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
-    if (!response.ok) throw new Error(`WeatherAPI returned ${response.status}`);
+    if (!response.ok) throw new Error('OpenWeather forecast unavailable');
     const data = await response.json();
-    const forecast = data.forecast?.forecastday;
-    if (!Array.isArray(forecast) || forecast.length === 0) throw new Error('Missing forecast');
-    const days = forecast.slice(0, 3).map(({ date, day }) => {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !day || !Number.isFinite(day.maxtemp_c) ||
-          !Number.isFinite(day.mintemp_c) || typeof day.condition?.text !== 'string') throw new Error('Invalid forecast');
-      const chance = Number(day.daily_chance_of_rain);
+    if (!Array.isArray(data.list) || !data.list.length || !Number.isFinite(data.city?.timezone) ||
+        Math.abs(data.city.timezone) > 86400) throw new Error('Missing forecast');
+    const groups = new Map();
+    for (const period of data.list) {
+      if (!Number.isFinite(period.dt) || !Number.isFinite(period.main?.temp) ||
+          typeof period.weather?.[0]?.description !== 'string') throw new Error('Invalid forecast');
+      if (period.dt * 1000 < Date.now()) continue;
+      // OpenWeather timestamps are UTC; group by the destination's local date.
+      const local = new Date((period.dt + data.city.timezone) * 1000);
+      const date = local.toISOString().slice(0, 10);
+      if (!groups.has(date)) groups.set(date, []);
+      groups.get(date).push({ ...period, hour: local.getUTCHours() });
+    }
+    const days = [...groups.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(0, 3).map(([date, periods]) => {
+      const representative = periods.reduce((best, item) => Math.abs(item.hour - 12) < Math.abs(best.hour - 12) ? item : best);
+      const temperatures = periods.map(item => item.main.temp);
+      const chances = periods.map(item => item.pop).filter(value => Number.isFinite(value) && value >= 0 && value <= 1);
       return {
         date,
-        condition: day.condition.text.slice(0, 150),
-        conditionCode: Number.isInteger(day.condition.code) ? day.condition.code : null,
-        maxC: Math.round(day.maxtemp_c),
-        minC: Math.round(day.mintemp_c),
-        rainChance: Number.isFinite(chance) ? Math.min(100, Math.max(0, chance)) : null
+        condition: representative.weather[0].description.slice(0, 150),
+        conditionCode: Number.isInteger(representative.weather[0].id) ? representative.weather[0].id : null,
+        maxC: Math.round(Math.max(...temperatures)),
+        minC: Math.round(Math.min(...temperatures)),
+        rainChance: chances.length ? Math.round(Math.max(...chances) * 100) : null
       };
     });
+    if (!days.length) throw new Error('Missing upcoming forecast');
     res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
     return res.status(200).json({ days });
   } catch {
