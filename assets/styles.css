@@ -1,0 +1,286 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f8f9; --surface: #fff; --surface-soft: #eaf1f3; --text: #163e4a; --muted: #526d77;
+  --accent: #227d8e; --accent-hover: #146474; --on-accent: #fff; --line: #d3e1e5; --sand: #e9e3d8;
+  --control-line: #7897a3; --success: #267152; --error: #b83230; --shadow: 0 14px 45px rgba(27, 70, 86, .09);
+  --font: 'Montserrat', sans-serif; --radius: 18px; --ease: cubic-bezier(.22,.68,0,1.1);
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101f29; --surface: #172c37; --surface-soft: #203742; --text: #e6f1f4; --muted: #b0c5cd;
+  --accent: #8acddb; --accent-hover: #a6dfeb; --on-accent: #102c38; --line: #35515d; --sand: #334044;
+  --control-line: #638b9d; --success: #93d3b3; --error: #ffa6a1; --shadow: 0 14px 45px rgba(0,0,0,.16);
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 100px }
+body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; transition: background-color .45s, color .45s }
+a { color: inherit; text-decoration: none }
+button, input, select, textarea { font: inherit; color: inherit }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; touch-action: manipulation }
+button, select { cursor: pointer }
+button { border: 0 }
+img { display: block; max-width: 100%; object-fit: cover }
+svg { display: block }
+[hidden] { display: none !important }
+h1, h2, h3, p { margin: 0 }
+h1, h2 { line-height: 1.18; text-wrap: balance; letter-spacing: -.045em; font-weight: 500 }
+h1 { font-size: clamp(38px, 4.5vw, 65px) }
+h2 { font-size: clamp(29px, 3vw, 43px) }
+h3 { font-size: 18px; line-height: 1.5; font-weight: 600; letter-spacing: -.02em }
+em { font-weight: 500; color: var(--accent) }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px }
+.container { width: min(1240px, calc(100% - 96px)); margin-inline: auto }
+.section { padding-block: 78px }
+.icon { display: inline-flex; flex: 0 0 auto; width: 22px; height: 22px; align-items: center; justify-content: center }
+.icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
+.eyebrow { display: flex; gap: 10px; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: .14em; line-height: 1.6; margin-bottom: 17px; color: var(--muted) }
+.small-line { width: 25px; height: 1px; background: currentColor }
+.muted { color: var(--muted) }
+.small { font-size: 12px }
+.full-width { width: 100% }
+.text-link { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; min-height: 44px }
+.text-link:hover { color: var(--accent) }
+.text-link .icon { width: 19px; height: 19px; transition: transform .2s }
+.text-link:hover .icon { transform: translate(3px, -2px) }
+.button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 50px; padding: 13px 23px; border-radius: 10px; font-size: 12px; line-height: 1.5; font-weight: 600; border: 1px solid transparent; transition: background .2s, color .2s, border-color .2s, transform .2s; cursor: pointer }
+.button:active { transform: scale(.985) }
+.button-primary { background: var(--accent); color: var(--on-accent) }
+.button-primary:hover { background: var(--accent-hover) }
+.button-secondary { background: var(--surface); border-color: var(--line); color: var(--text) }
+.button-secondary:hover { background: var(--surface-soft); border-color: var(--accent) }
+.button-light { background: #fff; color: #163e4a }
+.button-light:hover { background: #e7f1f4 }
+.button:disabled { opacity: .6; cursor: wait; transform: none }
+.icon-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-soft); color: var(--text) }
+.icon-button:hover { background: var(--line) }
+.skip-link { position: fixed; z-index: 1000; top: 10px; left: 10px; padding: 10px 15px; background: var(--accent); color: var(--on-accent); transform: translateY(-150%); border-radius: 6px }
+.skip-link:focus { transform: translateY(0) }
+.site-header { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; z-index: 40; top: 0; transition: background .45s, border-color .45s }
+.header-inner { height: 90px; display: flex; justify-content: space-between; align-items: center; gap: 30px }
+.brand { display: inline-flex; align-items: center; gap: 11px; line-height: 1; min-width: 160px }
+.brand-mark { color: var(--accent); width: 39px; height: 39px }
+.brand-mark svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round }
+.brand-name { font-size: 18px; font-weight: 700; letter-spacing: -.06em }
+.brand-subtitle { display: block; font-size: 9px; font-weight: 500; letter-spacing: .32em; margin-top: 7px }
+.main-nav { display: flex; align-items: center; gap: 30px }
+.main-nav a { font-size: 12px; font-weight: 500; min-height: 44px; display: inline-flex; align-items: center; color: var(--muted) }
+.main-nav a:hover { color: var(--accent) }
+.header-controls { display: flex; align-items: center; gap: 15px }
+.language-toggle { background: transparent; font-size: 11px; font-weight: 600; min-width: 44px; min-height: 44px; color: var(--muted) }
+.language-toggle span { color: var(--text); border-bottom: 1px solid var(--text); padding-bottom: 2px }
+.header-cta { min-height: 43px; padding: 9px 18px; font-size: 11px }
+.menu-button { display: none; background: transparent }
+/* A miniature sky changes with the page: sun, drifting cloud, moon, stars. */
+.theme-toggle { width: 72px; height: 44px; display: flex; align-items: center; padding: 0; background: transparent; overflow: visible }
+.toggle-sky { position: relative; display: block; width: 72px; height: 34px; border-radius: 22px; background: #b7dfed; overflow: hidden; box-shadow: inset 0 1px 4px rgba(16,55,77,.18); transition: background .65s }
+.toggle-orbit { position: absolute; width: 26px; height: 26px; left: 4px; top: 4px; border-radius: 50%; background: #f8cc6a; box-shadow: 0 0 0 5px rgba(255,255,255,.2), 0 0 0 10px rgba(255,255,255,.12); transition: transform .6s var(--ease), background .5s, box-shadow .6s }
+.toggle-cloud { position: absolute; width: 28px; height: 8px; bottom: 6px; right: 0; border-radius: 12px; background: #fff; transition: transform .65s var(--ease), opacity .4s }
+.toggle-cloud::before, .toggle-cloud::after { content: ''; position: absolute; border-radius: 50%; background: #fff; width: 13px; height: 13px; top: -7px; left: 4px }
+.toggle-cloud::after { width: 10px; height: 10px; left: 15px; top: -4px }
+.toggle-stars { position: absolute; left: 12px; top: 6px; color: #fff; font-size: 9px; line-height: 1; letter-spacing: 7px; opacity: 0; transform: translateY(-14px); transition: transform .6s var(--ease), opacity .4s }
+.toggle-stars::after { content: '·'; display: block; font-size: 16px; margin-left: 9px; margin-top: 0 }
+.moon-crater { position: absolute; width: 5px; height: 5px; background: #a5b7c4; border-radius: 50%; top: 6px; left: 6px; opacity: 0; transition: opacity .5s }
+.moon-crater::before, .moon-crater::after { content: ''; position: absolute; width: 7px; height: 7px; background: #a5b7c4; border-radius: 50%; top: 9px; left: 6px }
+.moon-crater::after { width: 3px; height: 3px; top: 1px; left: 12px }
+[data-theme="dark"] .toggle-sky { background: #25465c }
+[data-theme="dark"] .toggle-orbit { transform: translateX(38px) rotate(30deg); background: #e2eaf0; box-shadow: 0 0 0 5px rgba(255,255,255,.1), 0 0 0 10px rgba(255,255,255,.06) }
+[data-theme="dark"] .toggle-cloud { transform: translateY(25px); opacity: 0 }
+[data-theme="dark"] .toggle-stars { opacity: 1; transform: translateY(0) }
+[data-theme="dark"] .moon-crater { opacity: 1 }
+.hero { display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; padding-top: 42px; min-height: 615px; position: relative }
+.hero-copy { padding-top: 53px; padding-bottom: 90px }
+.hero h1 { margin-bottom: 26px }
+.hero-description { color: var(--muted); font-size: 14px; max-width: 400px; line-height: 1.9 }
+.hero-link { margin-top: 22px }
+.hero-footnote { display: flex; gap: 11px; align-items: center; margin-top: 36px; color: var(--muted); font-size: 10px }
+.hero-footnote .icon { width: 20px }
+.hero-visual { height: 528px; position: relative }
+.hero-image { width: 100%; height: 100%; border-radius: 22px 22px 22px 110px; object-position: 50% 50%; background: var(--surface-soft) }
+.hero-visual::after { content: ''; position: absolute; inset: 0; border-radius: 22px 22px 22px 110px; background: linear-gradient(transparent 55%,rgba(8,45,65,.48)); pointer-events: none }
+.image-label { position: absolute; bottom: 49px; left: 48px; color: white; z-index: 1; display: flex; align-items: center; gap: 10px }
+.image-label strong { display: block; font-size: 15px; font-weight: 500 }
+.image-label span:not(.icon) { display: block; font-size: 10px; opacity: .85; margin-top: 3px }
+.seaside-stamp { width: 98px; height: 98px; background: var(--sand); border: 5px solid var(--bg); position: absolute; top: 35px; left: -42px; z-index: 2; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; transform: rotate(-14deg); color: var(--text) }
+.seaside-stamp > span:not(.icon) { font-size: 7px; font-weight: 600; letter-spacing: .16em }
+.seaside-stamp .icon { width: 26px; height: 26px }
+.photo-credit { position: absolute; bottom: 15px; right: 20px; z-index: 2; font-size: 8px; color: rgba(255,255,255,.85) }
+.search-position { position: relative; z-index: 3; margin-top: -34px }
+.stay-search { display: grid; grid-template-columns: 1.6fr 1fr 1fr .7fr auto; background: var(--surface); border: 1px solid var(--line); border-radius: 15px; padding: 17px; box-shadow: var(--shadow); position: relative }
+.search-field { padding: 4px 21px; border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 7px; min-width: 0 }
+.search-field:first-child { padding-left: 12px }
+.field-caption { font-size: 9px; color: var(--muted); font-weight: 500; line-height: 1.5 }
+.search-field input, .search-field select { background: transparent; border: 0; width: 100%; font-size: 11px; font-weight: 600; min-height: 26px; padding: 0; min-width: 0 }
+.field-with-icon { display: flex; gap: 9px; align-items: center }
+.field-with-icon .icon { width: 16px; height: 16px; color: var(--accent) }
+.search-field option { background: var(--surface); color: var(--text) }
+.search-button { align-self: center; margin-left: 20px; padding-inline: 22px; min-height: 56px }
+.search-error { grid-column: 1 / -1; color: var(--error); padding: 10px 12px 0; font-size: 12px }
+.value-strip { display: flex; justify-content: space-around; gap: 25px; padding-top: 28px; padding-bottom: 8px; color: var(--muted) }
+.value-strip > div { display: flex; align-items: center; gap: 11px; font-size: 10px }
+.value-strip .icon { width: 19px; height: 19px; color: var(--accent) }
+.section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 30px }
+.section-heading > p { font-size: 12px; color: var(--muted); line-height: 1.85; max-width: 300px; margin-bottom: 6px }
+.section-heading.compact { align-items: center; margin-bottom: 34px }
+.section-heading.compact h2 { font-size: 33px }
+.room-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px }
+.filter-tabs { display: flex; gap: 8px; flex-wrap: wrap }
+.filter-tab { font-size: 11px; background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 30px; padding: 10px 18px; min-height: 44px; transition: .2s }
+.filter-tab.active { background: var(--text); border-color: var(--text); color: var(--bg) }
+.filter-tab:hover { border-color: var(--accent) }
+.result-count { color: var(--muted); font-size: 11px; white-space: nowrap }
+.sample-note { display: flex; align-items: flex-start; gap: 8px; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 20px }
+.sample-note .icon { width: 15px; height: 15px; margin-top: 1px }
+.room-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px }
+.room-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; transition: box-shadow .25s, border-color .25s }
+.room-card:hover { box-shadow: var(--shadow); border-color: var(--accent) }
+.room-card-photo { position: relative; display: block; overflow: hidden; aspect-ratio: 1.38; background: var(--surface-soft) }
+.room-card-photo img { width: 100%; height: 100%; transition: transform .55s }
+.room-card:hover .room-card-photo img { transform: scale(1.035) }
+.status-badge { position: absolute; left: 15px; top: 15px; display: flex; align-items: center; gap: 6px; color: #243f48; background: rgba(255,255,255,.95); border-radius: 6px; font-size: 8px; font-weight: 500; padding: 6px 9px; line-height: 1.5 }
+.status-dot { width: 5px; height: 5px; background: #6d8a96; border-radius: 50% }
+.status-badge.available .status-dot { background: #247a55 }
+.status-badge.unavailable .status-dot { background: #a45047 }
+.photo-type { position: absolute; bottom: 12px; right: 12px; border-radius: 5px; padding: 4px 7px; background: rgba(10,35,45,.72); color: #fff; font-size: 8px }
+.room-card-body { padding: 20px }
+.card-property { color: var(--muted); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px }
+.room-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 9px }
+.room-card-meta { display: flex; align-items: center; gap: 13px; color: var(--muted); font-size: 9px; min-height: 25px }
+.room-card-meta span { display: inline-flex; align-items: center; gap: 5px }
+.room-card-meta .icon { width: 15px; height: 15px }
+.room-card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); margin-top: 19px; padding-top: 16px; gap: 10px }
+.card-price-label { color: var(--muted); font-size: 9px; display: block; margin-bottom: 3px }
+.card-price { font-size: 11px; font-weight: 600 }
+.room-open { display: flex; align-items: center; gap: 6px; font-size: 9px; font-weight: 600; color: var(--accent); min-height: 44px }
+.room-open .icon { width: 16px; height: 16px }
+.empty-state { padding: 50px 20px; text-align: center; background: var(--surface); border: 1px dashed var(--line); border-radius: 18px }
+.empty-state > .icon { width: 30px; height: 30px; margin-bottom: 15px }
+.empty-state p { margin: 10px auto 22px; color: var(--muted); max-width: 450px }
+.destination-section { background: var(--surface-soft); padding-block: 68px }
+.destination-layout { display: grid; grid-template-columns: .95fr 1fr; gap: 78px; align-items: center }
+.destination-photo { position: relative }
+.destination-photo img { width: 100%; height: 500px; border-radius: 18px 100px 18px 18px; object-position: center }
+.destination-photo-caption { display: flex; gap: 11px; align-items: center; background: var(--surface); border-radius: 9px; position: absolute; bottom: 22px; left: 22px; padding: 13px 18px; font-size: 9px; font-weight: 600; letter-spacing: .1em }
+.destination-copy h2 { margin-bottom: 22px }
+.destination-copy > p { font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; max-width: 430px }
+.location-line { display: flex; align-items: flex-start; gap: 10px; color: var(--muted); font-size: 11px; margin-bottom: 8px }
+.location-line .icon { width: 17px; height: 17px; margin-top: 2px }
+.weather-panel { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 20px; min-height: 95px }
+.weather-title { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; margin-bottom: 12px }
+.weather-title .icon { width: 19px; height: 19px }
+.weather-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px }
+.weather-day { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 12px }
+.weather-date { color: var(--muted); font-size: 9px; margin-bottom: 8px }
+.weather-temp { font-size: 14px; font-weight: 600 }
+.weather-condition, .weather-rain { font-size: 9px; color: var(--muted); line-height: 1.6 }
+.weather-source { font-size: 8px; color: var(--muted); margin-top: 8px }
+.weather-source a { text-decoration: underline; text-underline-offset: 3px }
+.weather-unavailable { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 10px }
+.weather-unavailable button { background: transparent; color: var(--accent); font-size: 10px; text-decoration: underline; min-height: 44px }
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 50px }
+.step { padding-top: 22px; border-top: 1px solid var(--line) }
+.step-number { font-size: 11px; color: var(--accent); display: block; margin-bottom: 20px; font-weight: 600 }
+.step h3 { font-size: 14px; margin-bottom: 10px }
+.step p { color: var(--muted); font-size: 11px; line-height: 1.9; max-width: 310px }
+.closing-section { background: #1b6476; color: #fff; padding: 43px 48px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: 18px; overflow: hidden; position: relative; margin-bottom: 80px }
+.closing-section .eyebrow { color: #c7dfe5; font-size: 9px; margin-bottom: 10px }
+.closing-section h2 { font-size: 31px; max-width: 560px }
+.closing-section > *:not(svg) { position: relative; z-index: 1 }
+.closing-wave { position: absolute; width: 450px; height: 200px; top: 0; right: 0; fill: none; stroke: #e8f4f7; stroke-width: 1; opacity: .13 }
+.site-footer { border-top: 1px solid var(--line); padding-top: 42px; padding-bottom: 22px }
+.footer-top { display: flex; justify-content: space-between; gap: 40px; padding-bottom: 35px }
+.footer-brand p { font-size: 10px; color: var(--muted); max-width: 300px; margin-top: 20px }
+.footer-links { display: flex; gap: 80px }
+.footer-links strong { font-size: 10px; font-weight: 600; display: block; margin-bottom: 12px }
+.footer-links a { font-size: 10px; color: var(--muted); display: flex; min-height: 32px; align-items: center }
+.footer-bottom { display: flex; justify-content: space-between; gap: 25px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 9px; color: var(--muted) }
+.detail-main { padding-top: 27px }
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 11px; font-size: 10px; color: var(--muted); margin-bottom: 33px }
+.breadcrumb a { min-height: 44px; display: inline-flex; align-items: center }
+.detail-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; margin-bottom: 28px }
+.detail-heading h1 { font-size: 40px; margin-bottom: 13px }
+.detail-heading .eyebrow { margin-bottom: 10px }
+.detail-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; color: var(--muted); font-size: 11px }
+.detail-meta span { display: inline-flex; align-items: center; gap: 7px }
+.detail-meta .icon { width: 17px; height: 17px }
+.detail-gallery { display: grid; grid-template-columns: 1.6fr 1fr; grid-template-rows: 200px 200px; gap: 12px; position: relative; border-radius: 17px; overflow: hidden; background: var(--surface-soft) }
+.gallery-photo { padding: 0; overflow: hidden; background: var(--surface-soft); width: 100%; height: 100% }
+.gallery-photo:first-child { grid-row: span 2 }
+.gallery-photo img { width: 100%; height: 100%; transition: transform .4s }
+.gallery-photo:hover img { transform: scale(1.02) }
+.gallery-buttons { position: absolute; bottom: 18px; right: 18px; display: flex; gap: 10px }
+.gallery-buttons .button { min-height: 42px; background: #fff; color: #163e4a; font-size: 10px; padding: 9px 14px }
+.gallery-buttons .icon { width: 16px; height: 16px }
+.detail-sample { margin-top: 14px; margin-bottom: 35px }
+.detail-layout { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 70px; align-items: start }
+.detail-section { border-bottom: 1px solid var(--line); padding-bottom: 36px; margin-bottom: 36px }
+.detail-section h2 { font-size: 28px; margin-bottom: 20px }
+.detail-section p:not(.location-line) { font-size: 12px; line-height: 1.95; color: var(--muted) }
+.amenities-list { display: flex; flex-wrap: wrap; gap: 13px 25px; margin-top: 24px; font-size: 11px }
+.amenities-list > span { display: inline-flex; align-items: center; gap: 7px }
+.amenities-list .icon { width: 19px; height: 19px }
+.enquiry-card { position: sticky; top: 112px; padding: 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow) }
+.card-kicker { font-size: 10px; color: var(--muted); margin-bottom: 8px }
+.detail-price { font-size: 22px; font-weight: 600; line-height: 1.45; margin-bottom: 6px; letter-spacing: -.035em }
+.enquiry-card > .small { font-size: 10px }
+.room-dates { margin-top: 22px }
+.date-pair { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--control-line); border-radius: 9px 9px 0 0 }
+.room-dates label { min-width: 0; display: flex; flex-direction: column; padding: 11px 12px; gap: 5px }
+.room-dates label > span { font-size: 9px; color: var(--muted) }
+.date-pair label:first-child { border-right: 1px solid var(--line) }
+.room-dates input, .room-dates select { border: 0; background: transparent; width: 100%; min-height: 26px; font-size: 10px; padding: 0; min-width: 0 }
+.guest-label { border: 1px solid var(--control-line); border-top: 0; border-radius: 0 0 9px 9px }
+.room-dates option { background: var(--surface) }
+.room-availability { display: flex; gap: 7px; align-items: center; font-size: 10px; color: var(--muted); margin-block: 15px; line-height: 1.6 }
+.room-availability .icon { width: 16px; height: 16px }
+.room-availability.unavailable { color: var(--error) }
+.zalo-link { margin-top: 10px }
+.enquiry-note { display: flex; align-items: center; gap: 7px; margin-top: 16px; color: var(--muted); font-size: 8px; line-height: 1.7 }
+.enquiry-note .icon { width: 14px; height: 14px }
+.location-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px }
+.map-frame { aspect-ratio: 1.9; border-radius: 12px; overflow: hidden; margin-top: 20px; background: var(--surface-soft); border: 1px solid var(--line) }
+.map-frame iframe { width: 100%; height: 100%; border: 0 }
+.other-rooms { padding-top: 35px }
+.other-rooms .room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 810px }
+dialog { border: 1px solid var(--line); background: var(--surface); color: var(--text); margin: auto; padding: 28px; border-radius: 19px; max-height: calc(100dvh - 40px); overflow-y: auto; font-family: var(--font); box-shadow: 0 24px 80px rgba(0,0,0,.2) }
+dialog::backdrop { background: rgba(5,26,38,.67); backdrop-filter: blur(4px) }
+dialog[open] { animation: dialog-in .22s ease-out }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(10px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
+.enquiry-dialog { width: min(580px,calc(100% - 30px)) }
+.dialog-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 14px }
+.dialog-top h2 { font-size: 28px }
+.dialog-top .eyebrow { font-size: 8px; margin-bottom: 8px }
+.dialog-top .icon-button { flex: 0 0 auto }
+.dialog-room { font-size: 12px; font-weight: 600; margin-bottom: 5px }
+.enquiry-dialog > .muted { font-size: 11px; margin-bottom: 20px }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+.form-grid label { display: flex; flex-direction: column; gap: 7px; font-size: 10px; font-weight: 500; min-width: 0 }
+.form-grid .full { grid-column: 1 / -1 }
+.form-grid input, .form-grid select, .form-grid textarea { padding: 11px 12px; width: 100%; border: 1px solid var(--control-line); border-radius: 8px; background: var(--surface-soft); font-size: 12px; min-height: 44px; min-width: 0 }
+.form-grid textarea { resize: vertical }
+.form-grid option { background: var(--surface) }
+.optional { color: var(--muted); font-size: 9px; font-weight: 400 }
+.field-error { color: var(--error); font-size: 11px; margin-top: -8px }
+.form-status { min-height: 18px; color: var(--muted); font-size: 11px; margin-block: 14px }
+.form-status.error { color: var(--error) }
+.form-status.success { color: var(--success) }
+.form-footnote { font-size: 9px; line-height: 1.7; color: var(--muted); text-align: center; margin-top: 12px }
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden }
+.photo-dialog { width: min(1040px,calc(100% - 30px)); background: #10252f; color: #fff; border-color: #36535f; padding: 18px }
+.photo-dialog-top { display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 12px }
+.photo-stage { position: relative }
+.photo-stage > img { width: 100%; height: min(65vh,660px); object-fit: contain }
+.photo-stage .icon-button { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1; background: rgba(255,255,255,.9); color: #163e4a }
+.photo-prev { left: 10px }.photo-next { right: 10px }
+.photo-dialog > p { font-size: 11px; color: #c0d2da; margin-top: 12px }
+.panorama-dialog { width: min(1000px,calc(100% - 30px)) }
+#panorama-viewer { height: min(60vh,560px); border-radius: 10px; overflow: hidden; background: var(--surface-soft) }
+@media (min-width: 1450px) { .hero { min-height: 655px }.hero-visual { height: 565px } }
+@media (max-width: 1120px) { .container { width: calc(100% - 64px) }.main-nav { gap: 20px }.header-controls { gap: 10px }.hero { gap: 30px }.hero h1 { font-size: 49px }.hero-copy { padding-top: 45px }.hero-visual { height: 500px }.hero { min-height: 595px }.search-field { padding-inline: 13px }.destination-layout { gap: 45px }.detail-layout { gap: 40px; grid-template-columns: minmax(0,1fr) 310px } }
+@media (max-width: 900px) { .container { width: calc(100% - 48px) }.header-inner { height: 78px }.main-nav { gap: 15px }.main-nav a { font-size: 10px }.header-cta { display: none }.brand { min-width: 130px }.hero { gap: 22px; min-height: 540px; padding-top: 30px }.hero-copy { padding-top: 40px }.hero h1 { font-size: 42px }.hero-description { font-size: 12px }.hero-visual { height: 455px }.hero-footnote { font-size: 9px }.seaside-stamp { width: 78px; height: 78px; left: -25px }.seaside-stamp span:not(.icon) { font-size: 5px }.image-label { bottom: 40px; left: 35px }.stay-search { grid-template-columns: 1.6fr 1fr 1fr .8fr; padding: 15px }.search-button { grid-column: 1 / -1; margin: 15px 0 0; min-height: 46px }.search-field:last-of-type { border-right: 0 }.room-grid { gap: 15px }.room-card-body { padding: 16px }.room-card-meta { gap: 9px }.room-card h3 { font-size: 14px }.room-open { font-size: 8px }.section { padding-block: 60px }.destination-layout { gap: 35px }.destination-photo img { height: 445px }.destination-copy h2 { font-size: 33px }.steps-grid { gap: 28px }.closing-section { padding: 34px }.detail-layout { gap: 30px; grid-template-columns: minmax(0,1fr) 290px }.enquiry-card { padding: 20px }.detail-gallery { grid-template-rows: 165px 165px }.detail-heading h1 { font-size: 34px } }
+@media (max-width: 700px) { .container { width: calc(100% - 40px) }.header-inner { height: 72px; gap: 15px }.brand-name { font-size: 16px }.brand-mark { width: 31px; height: 31px }.brand-subtitle { font-size: 8px }.header-controls { gap: 7px }.language-toggle { min-width: 44px;font-size:10px }.theme-toggle { width: 65px }.toggle-sky { width: 65px }[data-theme="dark"] .toggle-orbit { transform: translateX(31px) rotate(30deg) }.menu-button { display: flex; width: 44px }.main-nav { display: none; position: absolute; top: 71px; left: 0; right: 0; background: var(--surface); padding: 16px 20px; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0 }.main-nav.open { display: flex }.main-nav a { font-size: 12px }.hero { grid-template-columns: 1fr; padding-top: 24px; gap: 26px; min-height: 0 }.hero-copy { padding-top: 10px; padding-bottom: 0 }.hero h1 { font-size: clamp(39px,8.7vw,56px); line-height:1.2; margin-bottom:20px }.hero .eyebrow { font-size: 9px }.hero-description { max-width: 400px;font-size:12px }.hero-link { margin-top: 14px }.hero-footnote { display: none }.hero-visual { height: 350px;margin-left:15px }.hero-image, .hero-visual::after { border-radius: 17px 17px 17px 75px }.seaside-stamp { top: 22px;left:-25px }.image-label { left: 30px; bottom: 35px }.image-label strong { font-size:13px }.search-position { margin-top: 22px }.stay-search { grid-template-columns: 1fr 1fr; padding: 13px; gap: 11px 0;border-radius:12px }.destination-field { grid-column: 1 / -1; border-right: 0; border-bottom: 1px solid var(--line); padding: 3px 7px 13px !important }.search-field { padding: 2px 7px }.search-field:nth-child(3) { border-right: 0 }.guest-field { grid-column: 1 / -1;border-right:0;border-top:1px solid var(--line);padding-top:12px;flex-direction:row;justify-content:space-between;align-items:center }.guest-field select { max-width: 110px }.search-button { margin-top: 0 }.value-strip { display: none }.section { padding-block: 48px }.section-heading { align-items:flex-start; flex-direction:column;gap:17px; margin-bottom:25px }.section-heading > p { max-width:400px;font-size:11px }.section-heading h2 { font-size:32px }.section-heading.compact { flex-direction:row;align-items:center;gap:20px }.section-heading.compact h2 { font-size:27px }.room-toolbar { gap:12px;align-items:flex-start; flex-direction:column;margin-bottom:12px }.filter-tabs { gap:6px }.filter-tab { padding:8px 13px;font-size:10px }.result-count { font-size:10px }.sample-note { font-size:9px }.room-grid { grid-template-columns: 1fr;gap:20px }.room-card-photo { aspect-ratio:1.55 }.room-card-body { padding:19px }.room-card h3 { font-size:17px }.room-card-meta { font-size:10px;gap:17px }.card-property { font-size:9px }.room-open { font-size:10px }.card-price { font-size:12px }.photo-type,.status-badge { font-size:9px }.destination-section { padding-block:40px }.destination-layout { grid-template-columns:1fr;gap:32px }.destination-photo img { height:330px;border-radius:16px 70px 16px 16px }.destination-copy h2 { font-size:34px }.destination-copy > p { font-size:12px }.weather-grid { gap:7px }.weather-day { padding:10px }.weather-temp { font-size:13px }.steps-grid { grid-template-columns:1fr;gap:24px }.step { padding-top:17px }.step-number { margin-bottom:8px }.step h3 { font-size:15px }.step p { font-size:11px;max-width:500px }.closing-section { padding:29px 25px;flex-direction:column;align-items:flex-start;gap:23px;margin-bottom:45px }.closing-section h2 { font-size:28px }.closing-section .eyebrow { font-size:8px }.footer-top { flex-direction:column;gap:28px }.footer-links { gap:70px }.footer-bottom { flex-direction:column;gap:8px }.detail-main { padding-top:12px }.breadcrumb { font-size:9px;gap:7px;margin-bottom:20px }.detail-heading { align-items:flex-start;flex-direction:column;gap:12px }.detail-heading h1 { font-size:30px }.detail-meta { font-size:10px;gap:12px }.detail-gallery { grid-template-columns:1fr 1fr;grid-template-rows:280px 125px;gap:7px }.gallery-photo:first-child { grid-row:auto;grid-column:1 / -1 }.gallery-buttons { bottom:9px;right:9px;gap:6px }.gallery-buttons .button { font-size:9px;padding:9px 11px }.detail-sample { margin-bottom:25px }.detail-layout { display:flex;flex-direction:column;gap:25px }.enquiry-card { position:static;width:100%;order:-1;padding:24px }.detail-price { font-size:23px }.room-dates input,.room-dates select { font-size:12px;min-height:32px }.room-dates label > span { font-size:10px }.room-availability { font-size:11px }.enquiry-note { font-size:9px }.detail-section { padding-bottom:25px;margin-bottom:25px }.detail-section h2 { font-size:25px }.detail-section p:not(.location-line) { font-size:12px }.location-heading { gap:12px }.location-heading .text-link { font-size:10px }.map-frame { aspect-ratio:1.35 }.other-rooms .room-grid { grid-template-columns:1fr }.other-rooms .section-heading { flex-direction:column;align-items:flex-start }.form-grid { gap:12px }.enquiry-dialog { padding:22px;max-height:calc(100dvh - 24px) }.dialog-top h2 { font-size:25px }.dialog-top .eyebrow { font-size:7px }.form-grid label { font-size:10px }.form-grid input { font-size:11px }.form-grid label:nth-last-child(3), .form-grid label:nth-last-child(2) { grid-column:1 / -1 } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto }*,*::before,*::after { animation:none !important; transition:none !important }.room-card:hover .room-card-photo img { transform:none } }
+.detail-gallery.single-image { grid-template-columns: 1fr; grid-template-rows: 412px }
+.detail-gallery.two-images { grid-template-rows: 412px }
+.detail-gallery.two-images .gallery-photo:first-child { grid-row: auto }
+@media (max-width:700px) { .detail-gallery.single-image { grid-template-rows:300px }.detail-gallery.two-images { grid-template-columns:1fr 1fr;grid-template-rows:300px }.detail-gallery.two-images .gallery-photo:first-child { grid-column:auto } }
+.destination-photo.no-photo { min-height: 320px; border-radius: 18px 100px 18px 18px; background: var(--sand) }
